@@ -16,7 +16,6 @@ import 'package:provider/provider.dart';
 class PagAlterarUsuarioModel extends FlutterFlowModel<PagAlterarUsuarioWidget> {
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Model for menuLateral component.
   late MenuLateralModel menuLateralModel;
   // Model for menuSuperior component.
@@ -56,7 +55,6 @@ class PagAlterarUsuarioModel extends FlutterFlowModel<PagAlterarUsuarioWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     menuLateralModel.dispose();
     menuSuperiorModel.dispose();
     txtNomeFocusNode?.dispose();
