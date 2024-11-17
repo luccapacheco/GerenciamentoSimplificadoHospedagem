@@ -11,11 +11,17 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_alterar_servico_model.dart';
 export 'pag_alterar_servico_model.dart';
 
 class PagAlterarServicoWidget extends StatefulWidget {
-  const PagAlterarServicoWidget({super.key});
+  const PagAlterarServicoWidget({
+    super.key,
+    required this.queryService,
+  });
+
+  final CadastroServicosRow? queryService;
 
   @override
   State<PagAlterarServicoWidget> createState() =>
@@ -35,14 +41,24 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'servicos';
-      setState(() {});
+      safeSetState(() {});
     });
 
-    _model.txtHoraTextController ??= TextEditingController();
+    _model.txtHoraTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.queryService?.hora,
+      '24:00',
+    ));
     _model.txtHoraFocusNode ??= FocusNode();
 
-    _model.txtDataTextController ??= TextEditingController();
+    _model.txtDataTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.queryService?.dataField,
+      'dd/mm/aa',
+    ));
     _model.txtDataFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -57,9 +73,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -76,7 +90,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -91,7 +105,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -137,13 +151,19 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                         child: FlutterFlowDropDown<String>(
                                           controller: _model
                                                   .dpdServioValueController ??=
-                                              FormFieldController<String>(null),
+                                              FormFieldController<String>(
+                                            _model.dpdServioValue ??=
+                                                valueOrDefault<String>(
+                                              widget!.queryService?.servico,
+                                              'Serviço',
+                                            ),
+                                          ),
                                           options: [
                                             'Manutenção',
                                             'Limpeza',
                                             'Serviço de quarto'
                                           ],
-                                          onChanged: (val) => setState(() =>
+                                          onChanged: (val) => safeSetState(() =>
                                               _model.dpdServioValue = val),
                                           width: 300.0,
                                           height: 56.0,
@@ -354,9 +374,15 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                       Expanded(
                                         flex: 8,
                                         child: FlutterFlowDropDown<String>(
-                                          controller: _model
-                                                  .dpdAcomoValueController ??=
-                                              FormFieldController<String>(null),
+                                          controller:
+                                              _model.dpdAcomoValueController ??=
+                                                  FormFieldController<String>(
+                                            _model.dpdAcomoValue ??=
+                                                valueOrDefault<String>(
+                                              widget!.queryService?.acomodacao,
+                                              'Selecione a acomodação',
+                                            ),
+                                          ),
                                           options: [
                                             'Domo',
                                             'Charrua(Bus)',
@@ -365,7 +391,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                             'Cabana',
                                             'Estacionamento para overlandrs'
                                           ],
-                                          onChanged: (val) => setState(
+                                          onChanged: (val) => safeSetState(
                                               () => _model.dpdAcomoValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -409,16 +435,22 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                       Expanded(
                                         flex: 8,
                                         child: FlutterFlowDropDown<String>(
-                                          controller: _model
-                                                  .dpdFunciValueController ??=
-                                              FormFieldController<String>(null),
+                                          controller:
+                                              _model.dpdFunciValueController ??=
+                                                  FormFieldController<String>(
+                                            _model.dpdFunciValue ??=
+                                                valueOrDefault<String>(
+                                              widget!.queryService?.funcionario,
+                                              'Funcionário solicitante',
+                                            ),
+                                          ),
                                           options: [
                                             'Gerente',
                                             'Recepcionista',
                                             'Camareira',
                                             'Zelador'
                                           ],
-                                          onChanged: (val) => setState(
+                                          onChanged: (val) => safeSetState(
                                               () => _model.dpdFunciValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -459,14 +491,20 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                         child: FlutterFlowDropDown<String>(
                                           controller: _model
                                                   .dpdStatusValueController ??=
-                                              FormFieldController<String>(null),
+                                              FormFieldController<String>(
+                                            _model.dpdStatusValue ??=
+                                                valueOrDefault<String>(
+                                              widget!.queryService?.status,
+                                              'Status',
+                                            ),
+                                          ),
                                           options: [
                                             'Finalizado',
                                             'Em andamento',
                                             'Confirmado',
                                             'Não condirmado'
                                           ],
-                                          onChanged: (val) => setState(() =>
+                                          onChanged: (val) => safeSetState(() =>
                                               _model.dpdStatusValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -511,18 +549,25 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                         child: FFButtonWidget(
                                           onPressed: () async {
                                             await CadastroServicosTable()
-                                                .insert({
-                                              'servico': _model.dpdServioValue,
-                                              'hora': _model
-                                                  .txtHoraTextController.text,
-                                              'data': _model
-                                                  .txtDataTextController.text,
-                                              'funcionário':
-                                                  _model.dpdFunciValue,
-                                              'status': _model.dpdStatusValue,
-                                              'acomodacao':
-                                                  _model.dpdAcomoValue,
-                                            });
+                                                .update(
+                                              data: {
+                                                'servico':
+                                                    _model.dpdServioValue,
+                                                'hora': _model
+                                                    .txtHoraTextController.text,
+                                                'data': _model
+                                                    .txtDataTextController.text,
+                                                'funcionário':
+                                                    _model.dpdFunciValue,
+                                                'status': _model.dpdStatusValue,
+                                                'acomodacao':
+                                                    _model.dpdAcomoValue,
+                                              },
+                                              matchingRows: (rows) => rows.eq(
+                                                'id',
+                                                widget!.queryService!.id,
+                                              ),
+                                            );
                                             await showDialog(
                                               context: context,
                                               builder: (alertDialogContext) {
@@ -541,6 +586,8 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                                 );
                                               },
                                             );
+
+                                            context.pushNamed('pagServico');
                                           },
                                           text: 'Alterar',
                                           options: FFButtonOptions(
@@ -574,22 +621,69 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                       Expanded(
                                         child: FFButtonWidget(
                                           onPressed: () async {
-                                            setState(() {
-                                              _model.dpdFunciValueController
-                                                  ?.reset();
-                                              _model.dpdServioValueController
-                                                  ?.reset();
-                                              _model.dpdAcomoValueController
-                                                  ?.reset();
-                                              _model.dpdStatusValueController
-                                                  ?.reset();
-                                            });
-                                            setState(() {
-                                              _model.txtHoraTextController
-                                                  ?.clear();
-                                              _model.txtDataTextController
-                                                  ?.clear();
-                                            });
+                                            var confirmDialogResponse =
+                                                await showDialog<bool>(
+                                                      context: context,
+                                                      builder:
+                                                          (alertDialogContext) {
+                                                        return AlertDialog(
+                                                          title: Text('Aviso'),
+                                                          content: Text(
+                                                              'Você deseja deletar?'),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext,
+                                                                      false),
+                                                              child: Text(
+                                                                  'Cancelar'),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext,
+                                                                      true),
+                                                              child: Text(
+                                                                  'Confirmar'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    ) ??
+                                                    false;
+                                            if (confirmDialogResponse) {
+                                              await CadastroServicosTable()
+                                                  .delete(
+                                                matchingRows: (rows) => rows.eq(
+                                                  'id',
+                                                  widget!.queryService!.id,
+                                                ),
+                                              );
+                                            } else {
+                                              context.pushNamed(
+                                                'pagAlterarServico',
+                                                queryParameters: {
+                                                  'queryService':
+                                                      serializeParam(
+                                                    widget!.queryService,
+                                                    ParamType.SupabaseRow,
+                                                  ),
+                                                }.withoutNulls,
+                                                extra: <String, dynamic>{
+                                                  kTransitionInfoKey:
+                                                      TransitionInfo(
+                                                    hasTransition: true,
+                                                    transitionType:
+                                                        PageTransitionType.fade,
+                                                    duration: Duration(
+                                                        milliseconds: 0),
+                                                  ),
+                                                },
+                                              );
+                                            }
+
+                                            context.pushNamed('pagServico');
                                           },
                                           text: 'Deletar',
                                           options: FFButtonOptions(
@@ -654,7 +748,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 8.0, 0.0, 8.0),
                                     child: Text(
-                                      'Pesquisar Serviços',
+                                      'Ordem de Serviços ',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -663,54 +757,6 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 8.0),
-                                          child: FFButtonWidget(
-                                            onPressed: () {
-                                              print('Button pressed ...');
-                                            },
-                                            text: 'Pesquisar',
-                                            options: FFButtonOptions(
-                                              height: 25.0,
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      24.0, 0.0, 24.0, 0.0),
-                                              iconPadding: EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        color: Colors.white,
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                              elevation: 3.0,
-                                              borderSide: BorderSide(
-                                                color: Colors.transparent,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ),
                                 Expanded(
@@ -826,13 +872,16 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                       List<CadastroServicosRow>
                                           listViewCadastroServicosRowList =
                                           snapshot.data!;
-                                      return ListView.builder(
+
+                                      return ListView.separated(
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
                                         scrollDirection: Axis.vertical,
                                         itemCount:
                                             listViewCadastroServicosRowList
                                                 .length,
+                                        separatorBuilder: (_, __) =>
+                                            SizedBox(height: 4.0),
                                         itemBuilder: (context, listViewIndex) {
                                           final listViewCadastroServicosRow =
                                               listViewCadastroServicosRowList[
@@ -870,7 +919,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                                       child: Text(
                                                         valueOrDefault<String>(
                                                           _model.dpdServioValue,
-                                                          'empty',
+                                                          'Acomodação',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -892,7 +941,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                                       child: Text(
                                                         valueOrDefault<String>(
                                                           _model.dpdAcomoValue,
-                                                          'empty',
+                                                          'Data',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -914,7 +963,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                                       child: Text(
                                                         valueOrDefault<String>(
                                                           _model.dpdStatusValue,
-                                                          'empty',
+                                                          'Status',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -931,13 +980,36 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                                             ),
                                                       ),
                                                     ),
-                                                    Icon(
-                                                      Icons.edit_note,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryText,
-                                                      size: 24.0,
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'pagAlterarServico',
+                                                          queryParameters: {
+                                                            'queryService':
+                                                                serializeParam(
+                                                              listViewCadastroServicosRow,
+                                                              ParamType
+                                                                  .SupabaseRow,
+                                                            ),
+                                                          }.withoutNulls,
+                                                        );
+                                                      },
+                                                      child: Icon(
+                                                        Icons.edit_note,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        size: 24.0,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
