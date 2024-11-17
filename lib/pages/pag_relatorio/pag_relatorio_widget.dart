@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_relatorio_model.dart';
 export 'pag_relatorio_model.dart';
 
@@ -31,11 +32,13 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'relatorios';
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -73,10 +76,9 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
         }
         List<CadastroHospedeRow> pagRelatorioCadastroHospedeRowList =
             snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -93,7 +95,7 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
                   children: [
                     wrapWithModel(
                       model: _model.menuLateralModel,
-                      updateCallback: () => setState(() {}),
+                      updateCallback: () => safeSetState(() {}),
                       child: MenuLateralWidget(),
                     ),
                     Expanded(
@@ -108,7 +110,7 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
                                   0.0, 0.0, 0.0, 32.0),
                               child: wrapWithModel(
                                 model: _model.menuSuperiorModel,
-                                updateCallback: () => setState(() {}),
+                                updateCallback: () => safeSetState(() {}),
                                 child: MenuSuperiorWidget(),
                               ),
                             ),
@@ -281,88 +283,6 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
                                           ),
                                         ],
                                       ),
-                                      Container(
-                                        width: double.infinity,
-                                        height: 50.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryBackground,
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8.0),
-                                            bottomRight: Radius.circular(8.0),
-                                            topLeft: Radius.circular(8.0),
-                                            topRight: Radius.circular(8.0),
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 16.0, 0.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                flex: 4,
-                                                child: Text(
-                                                  'Nome',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        fontSize: 16.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 3,
-                                                child: Text(
-                                                  'Profissão',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        fontSize: 16.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                flex: 4,
-                                                child: Text(
-                                                  'Email',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        fontSize: 16.0,
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                ),
-                                              ),
-                                              Icon(
-                                                Icons.edit_note,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                                size: 24.0,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
                                       Expanded(
                                         child: FutureBuilder<
                                             List<CadastroUsuarioRow>>(
@@ -393,6 +313,7 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
                                             List<CadastroUsuarioRow>
                                                 listViewCadastroUsuarioRowList =
                                                 snapshot.data!;
+
                                             return ListView.separated(
                                               padding: EdgeInsets.zero,
                                               shrinkWrap: true,
@@ -442,57 +363,7 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
                                                                 String>(
                                                               listViewCadastroUsuarioRow
                                                                   .nome,
-                                                              'null',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  fontSize:
-                                                                      14.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 3,
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              listViewCadastroUsuarioRow
-                                                                  .profissao,
-                                                              'null',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  fontSize:
-                                                                      14.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 4,
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              listViewCadastroUsuarioRow
-                                                                  .email,
-                                                              'null',
+                                                              'Relatório',
                                                             ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
@@ -523,7 +394,7 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
                                                             context.pushNamed(
                                                               'pagAlterarUsuario',
                                                               queryParameters: {
-                                                                'cadastro':
+                                                                'cadastroUser':
                                                                     serializeParam(
                                                                   listViewCadastroUsuarioRow,
                                                                   ParamType
@@ -547,7 +418,8 @@ class _PagRelatorioWidgetState extends State<PagRelatorioWidget> {
                                                             );
                                                           },
                                                           child: Icon(
-                                                            Icons.edit_note,
+                                                            Icons
+                                                                .adf_scanner_rounded,
                                                             color: FlutterFlowTheme
                                                                     .of(context)
                                                                 .secondaryText,
