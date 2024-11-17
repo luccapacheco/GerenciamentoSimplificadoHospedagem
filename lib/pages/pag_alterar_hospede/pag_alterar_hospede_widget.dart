@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_alterar_hospede_model.dart';
 export 'pag_alterar_hospede_model.dart';
 
@@ -40,32 +41,59 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'hospede';
-      setState(() {});
+      safeSetState(() {});
     });
 
-    _model.txtNomeTextController ??= TextEditingController();
+    _model.txtNomeTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarHospedes?.nome,
+      'Nome',
+    ));
     _model.txtNomeFocusNode ??= FocusNode();
 
-    _model.txtCpfTextController ??= TextEditingController();
+    _model.txtCpfTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarHospedes?.cpf,
+      'CPF',
+    ));
     _model.txtCpfFocusNode ??= FocusNode();
 
-    _model.txtRgTextController ??= TextEditingController();
+    _model.txtRgTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarHospedes?.rg,
+      'RG',
+    ));
     _model.txtRgFocusNode ??= FocusNode();
 
-    _model.txtcidadeTextController ??= TextEditingController();
+    _model.txtcidadeTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarHospedes?.cidade,
+      'Cidade',
+    ));
     _model.txtcidadeFocusNode ??= FocusNode();
 
-    _model.txtDataNascTextController ??= TextEditingController();
+    _model.txtDataNascTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarHospedes?.dataAniversario,
+      'Data Aniversário',
+    ));
     _model.txtDataNascFocusNode ??= FocusNode();
 
-    _model.txtEmailTextController ??= TextEditingController();
+    _model.txtEmailTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarHospedes?.email,
+      'E-mail',
+    ));
     _model.txtEmailFocusNode ??= FocusNode();
 
-    _model.txtTelefoneTextController ??= TextEditingController();
+    _model.txtTelefoneTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarHospedes?.telefone,
+      'Telefone',
+    ));
     _model.txtTelefoneFocusNode ??= FocusNode();
 
-    _model.textController8 ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -103,10 +131,9 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
         }
         List<CadastroHospedeRow> pagAlterarHospedeCadastroHospedeRowList =
             snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -123,7 +150,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                   children: [
                     wrapWithModel(
                       model: _model.menuLateralModel,
-                      updateCallback: () => setState(() {}),
+                      updateCallback: () => safeSetState(() {}),
                       child: MenuLateralWidget(),
                     ),
                     Expanded(
@@ -138,7 +165,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                   0.0, 0.0, 0.0, 32.0),
                               child: wrapWithModel(
                                 model: _model.menuSuperiorModel,
-                                updateCallback: () => setState(() {}),
+                                updateCallback: () => safeSetState(() {}),
                                 child: MenuSuperiorWidget(),
                               ),
                             ),
@@ -200,7 +227,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                               'Readex Pro',
                                                           letterSpacing: 0.0,
                                                         ),
-                                                hintText: widget
+                                                hintText: widget!
                                                     .alterarHospedes?.nome,
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
@@ -289,8 +316,8 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                               'Open Sans',
                                                           letterSpacing: 0.0,
                                                         ),
-                                                hintText:
-                                                    widget.alterarHospedes?.cpf,
+                                                hintText: widget!
+                                                    .alterarHospedes?.cpf,
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .labelMedium
@@ -382,7 +409,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                           letterSpacing: 0.0,
                                                         ),
                                                 hintText:
-                                                    widget.alterarHospedes?.rg,
+                                                    widget!.alterarHospedes?.rg,
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .labelMedium
@@ -479,7 +506,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                               'Readex Pro',
                                                           letterSpacing: 0.0,
                                                         ),
-                                                hintText: widget
+                                                hintText: widget!
                                                     .alterarHospedes?.cidade,
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
@@ -569,7 +596,8 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                               'Readex Pro',
                                                           letterSpacing: 0.0,
                                                         ),
-                                                hintText: widget.alterarHospedes
+                                                hintText: widget!
+                                                    .alterarHospedes
                                                     ?.dataAniversario,
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
@@ -648,7 +676,12 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                               controller: _model
                                                       .dropDownValueController ??=
                                                   FormFieldController<String>(
-                                                      null),
+                                                _model.dropDownValue ??=
+                                                    valueOrDefault<String>(
+                                                  widget!.alterarHospedes?.uf,
+                                                  'UF',
+                                                ),
+                                              ),
                                               options: [
                                                 'AC',
                                                 'AL',
@@ -677,8 +710,9 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                 'SP',
                                                 'TO'
                                               ],
-                                              onChanged: (val) => setState(() =>
-                                                  _model.dropDownValue = val),
+                                              onChanged: (val) => safeSetState(
+                                                  () => _model.dropDownValue =
+                                                      val),
                                               width: 300.0,
                                               height: 50.0,
                                               textStyle:
@@ -690,7 +724,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                         letterSpacing: 0.0,
                                                       ),
                                               hintText:
-                                                  widget.alterarHospedes?.uf,
+                                                  widget!.alterarHospedes?.uf,
                                               icon: Icon(
                                                 Icons
                                                     .keyboard_arrow_down_rounded,
@@ -732,7 +766,12 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                               autofocus: true,
                                               obscureText: false,
                                               decoration: InputDecoration(
-                                                labelText: 'Email',
+                                                labelText:
+                                                    valueOrDefault<String>(
+                                                  widget!
+                                                      .alterarHospedes?.email,
+                                                  'E-mail',
+                                                ),
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .labelMedium
@@ -741,7 +780,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                               'Readex Pro',
                                                           letterSpacing: 0.0,
                                                         ),
-                                                hintText: widget
+                                                hintText: widget!
                                                     .alterarHospedes?.email,
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
@@ -822,7 +861,12 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                               autofocus: true,
                                               obscureText: false,
                                               decoration: InputDecoration(
-                                                labelText: 'Telefone',
+                                                labelText:
+                                                    valueOrDefault<String>(
+                                                  widget!.alterarHospedes
+                                                      ?.telefone,
+                                                  'Telefone',
+                                                ),
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .labelMedium
@@ -831,7 +875,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                               'Readex Pro',
                                                           letterSpacing: 0.0,
                                                         ),
-                                                hintText: widget
+                                                hintText: widget!
                                                     .alterarHospedes?.telefone,
                                                 hintStyle:
                                                     FlutterFlowTheme.of(context)
@@ -939,7 +983,11 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                         .txtTelefoneTextController
                                                         .text,
                                                   },
-                                                  matchingRows: (rows) => rows,
+                                                  matchingRows: (rows) =>
+                                                      rows.eq(
+                                                    'id',
+                                                    widget!.alterarHospedes!.id,
+                                                  ),
                                                 );
                                                 await showDialog(
                                                   context: context,
@@ -960,32 +1008,14 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                     );
                                                   },
                                                 );
-                                                setState(() {
+                                                safeSetState(() {
                                                   _model.dropDownValueController
                                                       ?.reset();
                                                 });
-                                                setState(() {
-                                                  _model.txtNomeTextController
-                                                      ?.clear();
-                                                  _model.txtCpfTextController
-                                                      ?.clear();
-                                                  _model.txtRgTextController
-                                                      ?.clear();
-                                                  _model.txtcidadeTextController
-                                                      ?.clear();
-                                                  _model
-                                                      .txtDataNascTextController
-                                                      ?.clear();
-                                                  _model.txtEmailTextController
-                                                      ?.clear();
-                                                  _model
-                                                      .txtTelefoneTextController
-                                                      ?.clear();
-                                                  _model.textController8
-                                                      ?.clear();
-                                                });
+
+                                                context.pushNamed('pagHome');
                                               },
-                                              text: 'Salvar',
+                                              text: 'Alterar',
                                               options: FFButtonOptions(
                                                 height: 50.0,
                                                 padding: EdgeInsetsDirectional
@@ -1056,37 +1086,19 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                   await CadastroHospedeTable()
                                                       .delete(
                                                     matchingRows: (rows) =>
-                                                        rows,
+                                                        rows.eq(
+                                                      'id',
+                                                      widget!
+                                                          .alterarHospedes!.id,
+                                                    ),
                                                   );
+
+                                                  context.pushNamed(
+                                                      'pagCadastroHospede');
                                                 } else {
                                                   context.pushNamed(
                                                       'pagCadastroHospede');
                                                 }
-
-                                                setState(() {
-                                                  _model.txtNomeTextController
-                                                      ?.clear();
-                                                  _model.txtCpfTextController
-                                                      ?.clear();
-                                                  _model.txtRgTextController
-                                                      ?.clear();
-                                                  _model.txtcidadeTextController
-                                                      ?.clear();
-                                                  _model
-                                                      .txtDataNascTextController
-                                                      ?.clear();
-                                                  _model.txtEmailTextController
-                                                      ?.clear();
-                                                  _model
-                                                      .txtTelefoneTextController
-                                                      ?.clear();
-                                                  _model.textController8
-                                                      ?.clear();
-                                                });
-                                                setState(() {
-                                                  _model.dropDownValueController
-                                                      ?.reset();
-                                                });
                                               },
                                               text: 'Deletar',
                                               options: FFButtonOptions(
@@ -1141,7 +1153,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                           child: Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    32.0, 0.0, 32.0, 32.0),
+                                                    32.0, 0.0, 32.0, 0.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.max,
                                               mainAxisAlignment:
@@ -1159,7 +1171,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                             .fromSTEB(0.0, 8.0,
                                                                 0.0, 8.0),
                                                     child: Text(
-                                                      'Pesquisar Hóspede',
+                                                      'Lista de Hóspede',
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .bodyMedium
@@ -1169,243 +1181,6 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                             fontSize: 18.0,
                                                             letterSpacing: 0.0,
                                                           ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Expanded(
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      0.0,
-                                                                      0.0,
-                                                                      8.0,
-                                                                      8.0),
-                                                          child: TextFormField(
-                                                            controller: _model
-                                                                .textController8,
-                                                            focusNode: _model
-                                                                .textFieldFocusNode,
-                                                            autofocus: true,
-                                                            obscureText: false,
-                                                            decoration:
-                                                                InputDecoration(
-                                                              labelText:
-                                                                  'Digite o nome do hóspede',
-                                                              labelStyle:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                      ),
-                                                              hintStyle:
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Readex Pro',
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                      ),
-                                                              enabledBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .secondaryText,
-                                                                  width: 1.0,
-                                                                ),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8.0),
-                                                              ),
-                                                              focusedBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primary,
-                                                                  width: 1.0,
-                                                                ),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8.0),
-                                                              ),
-                                                              errorBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .error,
-                                                                  width: 1.0,
-                                                                ),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8.0),
-                                                              ),
-                                                              focusedErrorBorder:
-                                                                  OutlineInputBorder(
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .error,
-                                                                  width: 1.0,
-                                                                ),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8.0),
-                                                              ),
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                            validator: _model
-                                                                .textController8Validator
-                                                                .asValidator(
-                                                                    context),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Align(
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                            0.0, -1.0),
-                                                    child: Container(
-                                                      width: double.infinity,
-                                                      height: 25.0,
-                                                      decoration: BoxDecoration(
-                                                        color: FlutterFlowTheme
-                                                                .of(context)
-                                                            .primaryBackground,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  8.0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  8.0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  8.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  8.0),
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    16.0,
-                                                                    0.0,
-                                                                    16.0,
-                                                                    0.0),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            Expanded(
-                                                              flex: 4,
-                                                              child: Text(
-                                                                'Hóspede',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      fontSize:
-                                                                          14.0,
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              flex: 4,
-                                                              child: Text(
-                                                                'Telefone',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      fontSize:
-                                                                          14.0,
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              flex: 2,
-                                                              child: Text(
-                                                                'Email',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      fontSize:
-                                                                          14.0,
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                            Icon(
-                                                              Icons.edit_note,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .secondaryText,
-                                                              size: 24.0,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -1421,7 +1196,9 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                       future:
                                                           CadastroHospedeTable()
                                                               .queryRows(
-                                                        queryFn: (q) => q,
+                                                        queryFn: (q) => q.order(
+                                                            'nome',
+                                                            ascending: true),
                                                       ),
                                                       builder:
                                                           (context, snapshot) {
@@ -1447,7 +1224,9 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                         List<CadastroHospedeRow>
                                                             listViewCadastroHospedeRowList =
                                                             snapshot.data!;
-                                                        return ListView.builder(
+
+                                                        return ListView
+                                                            .separated(
                                                           padding:
                                                               EdgeInsets.zero,
                                                           shrinkWrap: true,
@@ -1456,6 +1235,10 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                           itemCount:
                                                               listViewCadastroHospedeRowList
                                                                   .length,
+                                                          separatorBuilder: (_,
+                                                                  __) =>
+                                                              SizedBox(
+                                                                  height: 4.0),
                                                           itemBuilder: (context,
                                                               listViewIndex) {
                                                             final listViewCadastroHospedeRow =
@@ -1530,7 +1313,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                                           valueOrDefault<
                                                                               String>(
                                                                             listViewCadastroHospedeRow.telefone,
-                                                                            'null',
+                                                                            'telefone',
                                                                           ),
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .bodyMedium
@@ -1549,7 +1332,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                                           valueOrDefault<
                                                                               String>(
                                                                             listViewCadastroHospedeRow.email,
-                                                                            'null',
+                                                                            'email',
                                                                           ),
                                                                           style: FlutterFlowTheme.of(context)
                                                                               .bodyMedium
@@ -1578,7 +1361,7 @@ class _PagAlterarHospedeWidgetState extends State<PagAlterarHospedeWidget> {
                                                                             queryParameters:
                                                                                 {
                                                                               'alterarHospedes': serializeParam(
-                                                                                widget.alterarHospedes,
+                                                                                listViewCadastroHospedeRow,
                                                                                 ParamType.SupabaseRow,
                                                                               ),
                                                                             }.withoutNulls,
