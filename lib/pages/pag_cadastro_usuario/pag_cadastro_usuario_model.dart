@@ -17,7 +17,6 @@ class PagCadastroUsuarioModel
     extends FlutterFlowModel<PagCadastroUsuarioWidget> {
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Model for menuLateral component.
   late MenuLateralModel menuLateralModel;
   // Model for menuSuperior component.
@@ -47,10 +46,6 @@ class PagCadastroUsuarioModel
   TextEditingController? txtSenhaTextController;
   late bool txtSenhaVisibility;
   String? Function(BuildContext, String?)? txtSenhaTextControllerValidator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController6;
-  String? Function(BuildContext, String?)? textController6Validator;
 
   @override
   void initState(BuildContext context) {
@@ -61,7 +56,6 @@ class PagCadastroUsuarioModel
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     menuLateralModel.dispose();
     menuSuperiorModel.dispose();
     txtNomeFocusNode?.dispose();
@@ -78,8 +72,5 @@ class PagCadastroUsuarioModel
 
     txtSenhaFocusNode?.dispose();
     txtSenhaTextController?.dispose();
-
-    textFieldFocusNode?.dispose();
-    textController6?.dispose();
   }
 }
