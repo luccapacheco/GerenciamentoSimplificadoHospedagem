@@ -16,12 +16,7 @@ import 'pag_cadastro_usuario_model.dart';
 export 'pag_cadastro_usuario_model.dart';
 
 class PagCadastroUsuarioWidget extends StatefulWidget {
-  const PagCadastroUsuarioWidget({
-    super.key,
-    required this.cadastroUser,
-  });
-
-  final CadastroUsuarioRow? cadastroUser;
+  const PagCadastroUsuarioWidget({super.key});
 
   @override
   State<PagCadastroUsuarioWidget> createState() =>
@@ -671,7 +666,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                           },
                                           text: 'Salvar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
@@ -717,7 +712,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                           },
                                           text: 'Limpar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
