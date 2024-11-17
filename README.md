@@ -60,6 +60,12 @@ Para rodar em outro navegador, você pode especificar o navegador desejado com a
 
 flutter run -d firefox
 
+----- PARA FAZER O ACESSO AO SISTEMA UTILIZAR OS SEGUINTES DADOS DE LOGIN E SENHA -----
+
+----- Login: usuarioteste@teste.com -----
+
+----- Senha: u1s2e3rteste -----
+
 
 --Tecnologias Utilizadas--
 
