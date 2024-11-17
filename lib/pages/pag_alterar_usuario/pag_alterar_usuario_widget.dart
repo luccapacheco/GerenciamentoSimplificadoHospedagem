@@ -11,16 +11,17 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_alterar_usuario_model.dart';
 export 'pag_alterar_usuario_model.dart';
 
 class PagAlterarUsuarioWidget extends StatefulWidget {
   const PagAlterarUsuarioWidget({
     super.key,
-    required this.cadastro,
+    required this.cadastroUser,
   });
 
-  final CadastroUsuarioRow? cadastro;
+  final CadastroUsuarioRow? cadastroUser;
 
   @override
   State<PagAlterarUsuarioWidget> createState() =>
@@ -40,28 +41,45 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'editarUsuario';
-      setState(() {});
+      safeSetState(() {});
     });
 
-    _model.txtNomeTextController ??=
-        TextEditingController(text: widget.cadastro?.nome);
+    _model.txtNomeTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.cadastroUser?.nome,
+      'Nome',
+    ));
     _model.txtNomeFocusNode ??= FocusNode();
 
-    _model.txtCpfTextController ??=
-        TextEditingController(text: widget.cadastro?.cpf);
+    _model.txtCpfTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.cadastroUser?.cpf,
+      'CPF',
+    ));
     _model.txtCpfFocusNode ??= FocusNode();
 
-    _model.txtEmailTextController ??=
-        TextEditingController(text: widget.cadastro?.email);
+    _model.txtEmailTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.cadastroUser?.email,
+      'E-mail',
+    ));
     _model.txtEmailFocusNode ??= FocusNode();
 
-    _model.txtLoginTextController ??=
-        TextEditingController(text: widget.cadastro?.login);
+    _model.txtLoginTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.cadastroUser?.login,
+      'Login',
+    ));
     _model.txtLoginFocusNode ??= FocusNode();
 
-    _model.txtSenhaTextController ??=
-        TextEditingController(text: widget.cadastro?.senha);
+    _model.txtSenhaTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.cadastroUser?.senha,
+      'Senha',
+    ));
     _model.txtSenhaFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -76,9 +94,7 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -95,7 +111,7 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -110,7 +126,7 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -399,7 +415,10 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                                                   .dpdProfissoValueController ??=
                                               FormFieldController<String>(
                                             _model.dpdProfissoValue ??=
-                                                widget.cadastro?.profissao,
+                                                valueOrDefault<String>(
+                                              widget!.cadastroUser?.profissao,
+                                              'Profissão',
+                                            ),
                                           ),
                                           options: [
                                             'Camareira',
@@ -407,7 +426,7 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                                             'Recepcionista',
                                             'Zelador'
                                           ],
-                                          onChanged: (val) => setState(() =>
+                                          onChanged: (val) => safeSetState(() =>
                                               _model.dpdProfissoValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -594,7 +613,7 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                                                   BorderRadius.circular(8.0),
                                             ),
                                             suffixIcon: InkWell(
-                                              onTap: () => setState(
+                                              onTap: () => safeSetState(
                                                 () => _model
                                                         .txtSenhaVisibility =
                                                     !_model.txtSenhaVisibility,
@@ -647,26 +666,55 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                                               },
                                               matchingRows: (rows) => rows.eq(
                                                 'id',
-                                                widget.cadastro?.id,
+                                                widget!.cadastroUser!.id,
                                               ),
                                             );
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.txtNomeTextController
                                                       ?.text =
-                                                  widget.cadastro!.nome!;
+                                                  valueOrDefault<String>(
+                                                widget!.cadastroUser?.nome,
+                                                'Nome',
+                                              );
+
                                               _model.txtCpfTextController
                                                       ?.text =
-                                                  widget.cadastro!.cpf!;
+                                                  valueOrDefault<String>(
+                                                widget!.cadastroUser?.cpf,
+                                                'CPF',
+                                              );
+
+                                              _model.txtCpfMask.updateMask(
+                                                newValue: TextEditingValue(
+                                                    text:
+                                                        valueOrDefault<String>(
+                                                  widget!.cadastroUser?.cpf,
+                                                  'CPF',
+                                                )),
+                                              );
                                               _model.txtEmailTextController
                                                       ?.text =
-                                                  widget.cadastro!.email!;
+                                                  valueOrDefault<String>(
+                                                widget!.cadastroUser?.email,
+                                                'E-mail',
+                                              );
+
                                               _model.txtLoginTextController
                                                       ?.text =
-                                                  widget.cadastro!.login!;
+                                                  valueOrDefault<String>(
+                                                widget!.cadastroUser?.login,
+                                                'Login',
+                                              );
+
                                               _model.txtSenhaTextController
                                                       ?.text =
-                                                  widget.cadastro!.senha!;
+                                                  valueOrDefault<String>(
+                                                widget!.cadastroUser?.senha,
+                                                'Senha',
+                                              );
                                             });
+
+                                            context.pushNamed('pagHome');
                                           },
                                           text: 'Alterar',
                                           options: FFButtonOptions(
@@ -737,26 +785,79 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                                                   .delete(
                                                 matchingRows: (rows) => rows.eq(
                                                   'id',
-                                                  widget.cadastro?.id,
+                                                  widget!.cadastroUser!.id,
                                                 ),
                                               );
-                                              setState(() {
+                                              safeSetState(() {
                                                 _model.txtNomeTextController
                                                         ?.text =
-                                                    widget.cadastro!.nome!;
+                                                    valueOrDefault<String>(
+                                                  widget!.cadastroUser?.nome,
+                                                  'Nome',
+                                                );
+
                                                 _model.txtCpfTextController
                                                         ?.text =
-                                                    widget.cadastro!.cpf!;
+                                                    valueOrDefault<String>(
+                                                  widget!.cadastroUser?.cpf,
+                                                  'CPF',
+                                                );
+
+                                                _model.txtCpfMask.updateMask(
+                                                  newValue: TextEditingValue(
+                                                      text: valueOrDefault<
+                                                          String>(
+                                                    widget!.cadastroUser?.cpf,
+                                                    'CPF',
+                                                  )),
+                                                );
                                                 _model.txtEmailTextController
                                                         ?.text =
-                                                    widget.cadastro!.email!;
+                                                    valueOrDefault<String>(
+                                                  widget!.cadastroUser?.email,
+                                                  'E-mail',
+                                                );
+
                                                 _model.txtLoginTextController
                                                         ?.text =
-                                                    widget.cadastro!.login!;
+                                                    valueOrDefault<String>(
+                                                  widget!.cadastroUser?.login,
+                                                  'Login',
+                                                );
+
                                                 _model.txtSenhaTextController
                                                         ?.text =
-                                                    widget.cadastro!.senha!;
+                                                    valueOrDefault<String>(
+                                                  widget!.cadastroUser?.senha,
+                                                  'Senha',
+                                                );
                                               });
+                                              safeSetState(() {
+                                                _model
+                                                    .dpdProfissoValueController
+                                                    ?.reset();
+                                              });
+                                            } else {
+                                              context.pushNamed(
+                                                'pagCadastroUsuario',
+                                                queryParameters: {
+                                                  'cadastroUser':
+                                                      serializeParam(
+                                                    widget!.cadastroUser,
+                                                    ParamType.SupabaseRow,
+                                                  ),
+                                                }.withoutNulls,
+                                                extra: <String, dynamic>{
+                                                  kTransitionInfoKey:
+                                                      TransitionInfo(
+                                                    hasTransition: true,
+                                                    transitionType:
+                                                        PageTransitionType.fade,
+                                                    duration: Duration(
+                                                        milliseconds: 0),
+                                                  ),
+                                                },
+                                              );
                                             }
                                           },
                                           text: 'Deletar',
