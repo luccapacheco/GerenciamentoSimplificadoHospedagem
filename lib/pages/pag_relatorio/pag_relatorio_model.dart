@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 class PagRelatorioModel extends FlutterFlowModel<PagRelatorioWidget> {
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Model for menuLateral component.
   late MenuLateralModel menuLateralModel;
   // Model for menuSuperior component.
@@ -31,7 +30,6 @@ class PagRelatorioModel extends FlutterFlowModel<PagRelatorioWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     menuLateralModel.dispose();
     menuSuperiorModel.dispose();
     textFieldFocusNode?.dispose();
