@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_cadastro_hospede_model.dart';
 export 'pag_cadastro_hospede_model.dart';
 
@@ -35,7 +36,7 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'hospede';
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.txtNomeTextController ??= TextEditingController();
@@ -59,8 +60,7 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
     _model.txtTelefoneTextController ??= TextEditingController();
     _model.txtTelefoneFocusNode ??= FocusNode();
 
-    _model.textController8 ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -98,10 +98,9 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
         }
         List<CadastroHospedeRow> pagCadastroHospedeCadastroHospedeRowList =
             snapshot.data!;
+
         return GestureDetector(
-          onTap: () => _model.unfocusNode.canRequestFocus
-              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-              : FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -118,7 +117,7 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                   children: [
                     wrapWithModel(
                       model: _model.menuLateralModel,
-                      updateCallback: () => setState(() {}),
+                      updateCallback: () => safeSetState(() {}),
                       child: MenuLateralWidget(),
                     ),
                     Expanded(
@@ -133,7 +132,7 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                   0.0, 0.0, 0.0, 32.0),
                               child: wrapWithModel(
                                 model: _model.menuSuperiorModel,
-                                updateCallback: () => setState(() {}),
+                                updateCallback: () => safeSetState(() {}),
                                 child: MenuSuperiorWidget(),
                               ),
                             ),
@@ -543,97 +542,114 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                           ),
                                           Expanded(
                                             flex: 2,
-                                            child: TextFormField(
-                                              controller: _model
-                                                  .txtDataNascTextController,
-                                              focusNode:
-                                                  _model.txtDataNascFocusNode,
-                                              autofocus: true,
-                                              obscureText: false,
-                                              decoration: InputDecoration(
-                                                labelText: 'Data Nacimento',
-                                                labelStyle:
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      0.0, 0.0, 10.0, 0.0),
+                                              child: TextFormField(
+                                                controller: _model
+                                                    .txtDataNascTextController,
+                                                focusNode:
+                                                    _model.txtDataNascFocusNode,
+                                                autofocus: true,
+                                                obscureText: false,
+                                                decoration: InputDecoration(
+                                                  labelText: 'Data Nacimento',
+                                                  labelStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                  hintText: 'dd/mm/aaaa',
+                                                  hintStyle:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .labelMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'Readex Pro',
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                      width: 1.0,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      width: 1.0,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
+                                                  errorBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .error,
+                                                      width: 1.0,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
+                                                  focusedErrorBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .error,
+                                                      width: 1.0,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsetsDirectional
+                                                          .fromSTEB(10.0, 0.0,
+                                                              0.0, 0.0),
+                                                ),
+                                                style:
                                                     FlutterFlowTheme.of(context)
-                                                        .labelMedium
+                                                        .bodyMedium
                                                         .override(
                                                           fontFamily:
                                                               'Readex Pro',
                                                           letterSpacing: 0.0,
                                                         ),
-                                                hintText: 'dd/mm/aaaa',
-                                                hintStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryText,
-                                                    width: 1.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryText,
-                                                    width: 1.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .error,
-                                                    width: 1.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                focusedErrorBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .error,
-                                                    width: 1.0,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
+                                                validator: _model
+                                                    .txtDataNascTextControllerValidator
+                                                    .asValidator(context),
+                                                inputFormatters: [
+                                                  _model.txtDataNascMask
+                                                ],
                                               ),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                              validator: _model
-                                                  .txtDataNascTextControllerValidator
-                                                  .asValidator(context),
-                                              inputFormatters: [
-                                                _model.txtDataNascMask
-                                              ],
                                             ),
                                           ),
                                           Expanded(
+                                            flex: 2,
                                             child: FlutterFlowDropDown<String>(
                                               controller: _model
                                                       .dropDownValueController ??=
@@ -667,10 +683,11 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                                 'SP',
                                                 'TO'
                                               ],
-                                              onChanged: (val) => setState(() =>
-                                                  _model.dropDownValue = val),
+                                              onChanged: (val) => safeSetState(
+                                                  () => _model.dropDownValue =
+                                                      val),
                                               width: 300.0,
-                                              height: 50.0,
+                                              height: 49.0,
                                               textStyle:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyMedium
@@ -943,29 +960,9 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                                     );
                                                   },
                                                 );
-                                                setState(() {
+                                                safeSetState(() {
                                                   _model.dropDownValueController
                                                       ?.reset();
-                                                });
-                                                setState(() {
-                                                  _model.txtNomeTextController
-                                                      ?.clear();
-                                                  _model.txtCpfTextController
-                                                      ?.clear();
-                                                  _model.txtRgTextController
-                                                      ?.clear();
-                                                  _model.txtcidadeTextController
-                                                      ?.clear();
-                                                  _model
-                                                      .txtDataNascTextController
-                                                      ?.clear();
-                                                  _model.txtEmailTextController
-                                                      ?.clear();
-                                                  _model
-                                                      .txtTelefoneTextController
-                                                      ?.clear();
-                                                  _model.textController8
-                                                      ?.clear();
                                                 });
                                               },
                                               text: 'Salvar',
@@ -1003,27 +1000,31 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                           Expanded(
                                             child: FFButtonWidget(
                                               onPressed: () async {
-                                                setState(() {
+                                                safeSetState(() {
                                                   _model.txtNomeTextController
                                                       ?.clear();
                                                   _model.txtCpfTextController
                                                       ?.clear();
+                                                  _model.txtCpfMask.clear();
                                                   _model.txtRgTextController
                                                       ?.clear();
+                                                  _model.txtRgMask.clear();
                                                   _model.txtcidadeTextController
                                                       ?.clear();
                                                   _model
                                                       .txtDataNascTextController
                                                       ?.clear();
+                                                  _model.txtDataNascMask
+                                                      .clear();
                                                   _model.txtEmailTextController
                                                       ?.clear();
                                                   _model
                                                       .txtTelefoneTextController
                                                       ?.clear();
-                                                  _model.textController8
-                                                      ?.clear();
+                                                  _model.txtTelefoneMask
+                                                      .clear();
                                                 });
-                                                setState(() {
+                                                safeSetState(() {
                                                   _model.dropDownValueController
                                                       ?.reset();
                                                 });
@@ -1105,129 +1106,6 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                                           letterSpacing: 0.0,
                                                         ),
                                                   ),
-                                                ),
-                                              ),
-                                              Align(
-                                                alignment: AlignmentDirectional(
-                                                    0.0, 0.0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    8.0,
-                                                                    8.0),
-                                                        child: TextFormField(
-                                                          controller: _model
-                                                              .textController8,
-                                                          focusNode: _model
-                                                              .textFieldFocusNode,
-                                                          autofocus: true,
-                                                          obscureText: false,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            labelText:
-                                                                'Digite o nome do hóspede',
-                                                            labelStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                            hintStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Readex Pro',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryText,
-                                                                width: 1.0,
-                                                              ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                            ),
-                                                            focusedBorder:
-                                                                OutlineInputBorder(
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primary,
-                                                                width: 1.0,
-                                                              ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                            ),
-                                                            errorBorder:
-                                                                OutlineInputBorder(
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .error,
-                                                                width: 1.0,
-                                                              ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                            ),
-                                                            focusedErrorBorder:
-                                                                OutlineInputBorder(
-                                                              borderSide:
-                                                                  BorderSide(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .error,
-                                                                width: 1.0,
-                                                              ),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8.0),
-                                                            ),
-                                                          ),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                          validator: _model
-                                                              .textController8Validator
-                                                              .asValidator(
-                                                                  context),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
                                                 ),
                                               ),
                                               Expanded(
@@ -1374,7 +1252,8 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                                     List<CadastroHospedeRow>
                                                         listViewCadastroHospedeRowList =
                                                         snapshot.data!;
-                                                    return ListView.builder(
+
+                                                    return ListView.separated(
                                                       padding: EdgeInsets.zero,
                                                       shrinkWrap: true,
                                                       scrollDirection:
@@ -1382,6 +1261,9 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                                       itemCount:
                                                           listViewCadastroHospedeRowList
                                                               .length,
+                                                      separatorBuilder: (_,
+                                                              __) =>
+                                                          SizedBox(height: 4.0),
                                                       itemBuilder: (context,
                                                           listViewIndex) {
                                                         final listViewCadastroHospedeRow =
@@ -1461,7 +1343,7 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                                                           String>(
                                                                         listViewCadastroHospedeRow
                                                                             .telefone,
-                                                                        'null',
+                                                                        'Telefone',
                                                                       ),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
@@ -1485,7 +1367,7 @@ class _PagCadastroHospedeWidgetState extends State<PagCadastroHospedeWidget> {
                                                                           String>(
                                                                         listViewCadastroHospedeRow
                                                                             .email,
-                                                                        'null',
+                                                                        'E-mail',
                                                                       ),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
