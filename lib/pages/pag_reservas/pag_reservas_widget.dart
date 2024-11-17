@@ -115,7 +115,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                         Expanded(
                           child: Container(
                             width: double.infinity,
-                            height: 100.0,
+                            height: MediaQuery.sizeOf(context).height * 0.5,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context)
                                   .secondaryBackground,
@@ -1064,7 +1064,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 300.0,
+                          height: 250.0,
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
