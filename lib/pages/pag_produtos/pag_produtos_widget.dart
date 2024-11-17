@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_produtos_model.dart';
 export 'pag_produtos_model.dart';
 
@@ -34,7 +35,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'produto';
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.txtNomePTextController ??= TextEditingController();
@@ -51,6 +52,8 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
 
     _model.textController5 ??= TextEditingController();
     _model.textFieldFocusNode2 ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -65,9 +68,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -84,7 +85,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -99,7 +100,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -394,7 +395,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                             'Chocolates',
                                             'Salgados'
                                           ],
-                                          onChanged: (val) => setState(
+                                          onChanged: (val) => safeSetState(
                                               () => _model.dpdCateValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -587,117 +588,133 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Expanded(
-                                        child: FFButtonWidget(
-                                          onPressed: () async {
-                                            await CadastroProdutoTable()
-                                                .insert({
-                                              'nome': _model
-                                                  .txtNomePTextController.text,
-                                              'quantidadeEstoque': _model
-                                                  .txtQntTextController.text,
-                                              'valorProduto': _model
-                                                  .txtValorPTextController.text,
-                                              'categoria': _model.dpdCateValue,
-                                              'codigoProduto':
-                                                  _model.textController4.text,
-                                              'descricao':
-                                                  _model.textController5.text,
-                                            });
-                                            await showDialog(
-                                              context: context,
-                                              builder: (alertDialogContext) {
-                                                return AlertDialog(
-                                                  title: Text('Aviso'),
-                                                  content: Text(
-                                                      'Produto cadastrado com sucesso.'),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              alertDialogContext),
-                                                      child: Text('Ok'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                            setState(() {
-                                              _model.dpdCateValueController
-                                                  ?.reset();
-                                              _model.dpdProdutoValueController
-                                                  ?.reset();
-                                            });
-                                            setState(() {
-                                              _model.textController5?.clear();
-                                              _model.textController4?.clear();
-                                              _model.txtValorPTextController
-                                                  ?.clear();
-                                              _model.txtNomePTextController
-                                                  ?.clear();
-                                              _model.txtQntTextController
-                                                  ?.clear();
-                                            });
-                                          },
-                                          text: 'Salvar',
-                                          options: FFButtonOptions(
-                                            height: 50.0,
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    24.0, 0.0, 24.0, 0.0),
-                                            iconPadding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 0.0, 0.0),
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      color: Colors.white,
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            elevation: 3.0,
-                                            borderSide: BorderSide(
-                                              color: Colors.transparent,
-                                              width: 1.0,
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  5.0, 0.0, 0.0, 0.0),
+                                          child: FFButtonWidget(
+                                            onPressed: () async {
+                                              await CadastroProdutoTable()
+                                                  .insert({
+                                                'nome': _model
+                                                    .txtNomePTextController
+                                                    .text,
+                                                'quantidadeEstoque': _model
+                                                    .txtQntTextController.text,
+                                                'valorProduto': _model
+                                                    .txtValorPTextController
+                                                    .text,
+                                                'categoria':
+                                                    _model.dpdCateValue,
+                                                'codigoProduto':
+                                                    _model.textController4.text,
+                                                'descricao':
+                                                    _model.textController5.text,
+                                              });
+                                              await showDialog(
+                                                context: context,
+                                                builder: (alertDialogContext) {
+                                                  return AlertDialog(
+                                                    title: Text('Aviso'),
+                                                    content: Text(
+                                                        'Produto cadastrado com sucesso.'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext),
+                                                        child: Text('Ok'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                              safeSetState(() {
+                                                _model.dpdCateValueController
+                                                    ?.reset();
+                                                _model.dpdProdutoValueController
+                                                    ?.reset();
+                                              });
+                                              safeSetState(() {
+                                                _model.textController5?.clear();
+                                                _model.textController4?.clear();
+                                                _model.txtValorPTextController
+                                                    ?.clear();
+                                                _model.txtValorPMask.clear();
+                                                _model.txtNomePTextController
+                                                    ?.clear();
+                                                _model.txtQntTextController
+                                                    ?.clear();
+                                              });
+                                            },
+                                            text: 'Salvar',
+                                            options: FFButtonOptions(
+                                              height: 50.0,
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      24.0, 0.0, 24.0, 0.0),
+                                              iconPadding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color: Colors.white,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                              elevation: 3.0,
+                                              borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                                width: 1.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
                                           ),
                                         ),
                                       ),
                                       Expanded(
-                                        child: FFButtonWidget(
-                                          onPressed: () {
-                                            print('Button pressed ...');
-                                          },
-                                          text: 'Limpar',
-                                          options: FFButtonOptions(
-                                            height: 50.0,
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    24.0, 0.0, 24.0, 0.0),
-                                            iconPadding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 0.0, 0.0),
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                            textStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      color: Colors.white,
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            elevation: 3.0,
-                                            borderSide: BorderSide(
-                                              color: Colors.transparent,
-                                              width: 1.0,
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 5.0, 0.0),
+                                          child: FFButtonWidget(
+                                            onPressed: () {
+                                              print('Button pressed ...');
+                                            },
+                                            text: 'Limpar',
+                                            options: FFButtonOptions(
+                                              height: 50.0,
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      24.0, 0.0, 24.0, 0.0),
+                                              iconPadding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        fontFamily:
+                                                            'Readex Pro',
+                                                        color: Colors.white,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                              elevation: 3.0,
+                                              borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                                width: 1.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
                                           ),
                                         ),
                                       ),
@@ -762,7 +779,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                           'Salgados',
                                           'Todo o estoque'
                                         ],
-                                        onChanged: (val) => setState(
+                                        onChanged: (val) => safeSetState(
                                             () => _model.dpdProdutoValue = val),
                                         width: 300.0,
                                         height: 50.0,
@@ -928,7 +945,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                   child:
                                       FutureBuilder<List<CadastroProdutoRow>>(
                                     future: CadastroProdutoTable().queryRows(
-                                      queryFn: (q) => q,
+                                      queryFn: (q) => q.order('nome'),
                                     ),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
@@ -950,13 +967,16 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                       List<CadastroProdutoRow>
                                           listViewCadastroProdutoRowList =
                                           snapshot.data!;
-                                      return ListView.builder(
+
+                                      return ListView.separated(
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
                                         scrollDirection: Axis.vertical,
                                         itemCount:
                                             listViewCadastroProdutoRowList
                                                 .length,
+                                        separatorBuilder: (_, __) =>
+                                            SizedBox(height: 4.0),
                                         itemBuilder: (context, listViewIndex) {
                                           final listViewCadastroProdutoRow =
                                               listViewCadastroProdutoRowList[
@@ -992,7 +1012,11 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                                     Expanded(
                                                       flex: 4,
                                                       child: Text(
-                                                        'Produto',
+                                                        valueOrDefault<String>(
+                                                          listViewCadastroProdutoRow
+                                                              .nome,
+                                                          'Nome',
+                                                        ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
                                                             .bodyMedium
@@ -1011,7 +1035,11 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                                     Expanded(
                                                       flex: 4,
                                                       child: Text(
-                                                        'Quantidade',
+                                                        valueOrDefault<String>(
+                                                          listViewCadastroProdutoRow
+                                                              .quantidadeEstoque,
+                                                          'Quatidade',
+                                                        ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
                                                             .bodyMedium
@@ -1030,7 +1058,11 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                                     Expanded(
                                                       flex: 2,
                                                       child: Text(
-                                                        'Valor',
+                                                        valueOrDefault<String>(
+                                                          listViewCadastroProdutoRow
+                                                              .valorProduto,
+                                                          'Valor',
+                                                        ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
                                                             .bodyMedium
@@ -1046,13 +1078,36 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                                             ),
                                                       ),
                                                     ),
-                                                    Icon(
-                                                      Icons.edit_note,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryText,
-                                                      size: 24.0,
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'pagAlterarProdutos',
+                                                          queryParameters: {
+                                                            'alterarProduto':
+                                                                serializeParam(
+                                                              listViewCadastroProdutoRow,
+                                                              ParamType
+                                                                  .SupabaseRow,
+                                                            ),
+                                                          }.withoutNulls,
+                                                        );
+                                                      },
+                                                      child: Icon(
+                                                        Icons.edit_note,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        size: 24.0,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
