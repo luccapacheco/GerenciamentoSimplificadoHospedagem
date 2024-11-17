@@ -16,7 +16,6 @@ import 'package:provider/provider.dart';
 class PagProdutosModel extends FlutterFlowModel<PagProdutosWidget> {
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Model for menuLateral component.
   late MenuLateralModel menuLateralModel;
   // Model for menuSuperior component.
@@ -57,7 +56,6 @@ class PagProdutosModel extends FlutterFlowModel<PagProdutosWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     menuLateralModel.dispose();
     menuSuperiorModel.dispose();
     txtNomePFocusNode?.dispose();
