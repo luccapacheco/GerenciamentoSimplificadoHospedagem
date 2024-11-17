@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import 'menu_superior_model.dart';
 export 'menu_superior_model.dart';
 
@@ -26,6 +27,8 @@ class _MenuSuperiorWidgetState extends State<MenuSuperiorWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MenuSuperiorModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
