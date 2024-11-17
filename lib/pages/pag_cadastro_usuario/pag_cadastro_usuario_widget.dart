@@ -11,11 +11,17 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_cadastro_usuario_model.dart';
 export 'pag_cadastro_usuario_model.dart';
 
 class PagCadastroUsuarioWidget extends StatefulWidget {
-  const PagCadastroUsuarioWidget({super.key});
+  const PagCadastroUsuarioWidget({
+    super.key,
+    required this.cadastroUser,
+  });
+
+  final CadastroUsuarioRow? cadastroUser;
 
   @override
   State<PagCadastroUsuarioWidget> createState() =>
@@ -35,7 +41,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'usuario';
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.txtNomeTextController ??= TextEditingController();
@@ -53,8 +59,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
     _model.txtSenhaTextController ??= TextEditingController();
     _model.txtSenhaFocusNode ??= FocusNode();
 
-    _model.textController6 ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -69,9 +74,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -88,7 +91,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -103,7 +106,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -397,7 +400,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                             'Recepcionista',
                                             'Zelador'
                                           ],
-                                          onChanged: (val) => setState(() =>
+                                          onChanged: (val) => safeSetState(() =>
                                               _model.dpdProfissoValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -584,7 +587,7 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                                   BorderRadius.circular(8.0),
                                             ),
                                             suffixIcon: InkWell(
-                                              onTap: () => setState(
+                                              onTap: () => safeSetState(
                                                 () => _model
                                                         .txtSenhaVisibility =
                                                     !_model.txtSenhaVisibility,
@@ -634,19 +637,6 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                               'senha': _model
                                                   .txtSenhaTextController.text,
                                             });
-                                            setState(() {
-                                              _model.txtNomeTextController
-                                                  ?.clear();
-                                              _model.txtCpfTextController
-                                                  ?.clear();
-                                              _model.txtEmailTextController
-                                                  ?.clear();
-                                              _model.txtLoginTextController
-                                                  ?.clear();
-                                              _model.txtSenhaTextController
-                                                  ?.clear();
-                                              _model.textController6?.clear();
-                                            });
                                             await showDialog(
                                               context: context,
                                               builder: (alertDialogContext) {
@@ -665,6 +655,19 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                                 );
                                               },
                                             );
+                                            safeSetState(() {
+                                              _model.txtNomeTextController
+                                                  ?.clear();
+                                              _model.txtCpfTextController
+                                                  ?.clear();
+                                              _model.txtCpfMask.clear();
+                                              _model.txtEmailTextController
+                                                  ?.clear();
+                                              _model.txtLoginTextController
+                                                  ?.clear();
+                                              _model.txtSenhaTextController
+                                                  ?.clear();
+                                            });
                                           },
                                           text: 'Salvar',
                                           options: FFButtonOptions(
@@ -698,11 +701,12 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                       Expanded(
                                         child: FFButtonWidget(
                                           onPressed: () async {
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.txtNomeTextController
                                                   ?.clear();
                                               _model.txtCpfTextController
                                                   ?.clear();
+                                              _model.txtCpfMask.clear();
                                               _model.txtEmailTextController
                                                   ?.clear();
                                               _model.txtLoginTextController
@@ -785,290 +789,14 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                               ),
                                             ),
                                           ),
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                8.0, 8.0),
-                                                    child: TextFormField(
-                                                      controller: _model
-                                                          .textController6,
-                                                      focusNode: _model
-                                                          .textFieldFocusNode,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelText: 'Pesquisar',
-                                                        labelStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                        hintText:
-                                                            'Digite o nome do usuário',
-                                                        hintStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryText,
-                                                            width: 1.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary,
-                                                            width: 1.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                        errorBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 1.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                        focusedErrorBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 1.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                      ),
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .bodyMedium
-                                                          .override(
-                                                            fontFamily:
-                                                                'Readex Pro',
-                                                            letterSpacing: 0.0,
-                                                          ),
-                                                      validator: _model
-                                                          .textController6Validator
-                                                          .asValidator(context),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                0.0, 8.0),
-                                                    child: FFButtonWidget(
-                                                      onPressed: () {
-                                                        print(
-                                                            'Button pressed ...');
-                                                      },
-                                                      text: 'Pesquisar',
-                                                      options: FFButtonOptions(
-                                                        height: 50.0,
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    24.0,
-                                                                    0.0,
-                                                                    24.0,
-                                                                    0.0),
-                                                        iconPadding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        textStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .titleSmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Readex Pro',
-                                                                  color: Colors
-                                                                      .white,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
-                                                        elevation: 3.0,
-                                                        borderSide: BorderSide(
-                                                          color: Colors
-                                                              .transparent,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Align(
-                                              alignment: AlignmentDirectional(
-                                                  0.0, -1.0),
-                                              child: Container(
-                                                width: double.infinity,
-                                                height: 25.0,
-                                                decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryBackground,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(8.0),
-                                                    bottomRight:
-                                                        Radius.circular(8.0),
-                                                    topLeft:
-                                                        Radius.circular(8.0),
-                                                    topRight:
-                                                        Radius.circular(8.0),
-                                                  ),
-                                                ),
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          16.0, 0.0, 16.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Text(
-                                                          'Funcionário',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                fontSize: 14.0,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: Text(
-                                                          'Telefone',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                fontSize: 14.0,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: Text(
-                                                          'Email',
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Readex Pro',
-                                                                fontSize: 14.0,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons.edit_note,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        size: 24.0,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
                                           Expanded(
                                             flex: 7,
                                             child: FutureBuilder<
-                                                List<CadastroHospedeRow>>(
-                                              future: CadastroHospedeTable()
-                                                  .queryRows(
-                                                queryFn: (q) => q,
+                                                List<CadastroUsuarioRow>>(
+                                              future: CadastroUsuarioTable()
+                                                  .querySingleRow(
+                                                queryFn: (q) => q.order('nome',
+                                                    ascending: true),
                                               ),
                                               builder: (context, snapshot) {
                                                 // Customize what your widget looks like when it's loading.
@@ -1090,23 +818,24 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                                     ),
                                                   );
                                                 }
-                                                List<CadastroHospedeRow>
-                                                    listViewCadastroHospedeRowList =
+                                                List<CadastroUsuarioRow>
+                                                    listViewCadastroUsuarioRowList =
                                                     snapshot.data!;
-                                                return ListView.builder(
+
+                                                final listViewCadastroUsuarioRow =
+                                                    listViewCadastroUsuarioRowList
+                                                            .isNotEmpty
+                                                        ? listViewCadastroUsuarioRowList
+                                                            .first
+                                                        : null;
+
+                                                return ListView(
                                                   padding: EdgeInsets.zero,
                                                   shrinkWrap: true,
                                                   scrollDirection:
                                                       Axis.vertical,
-                                                  itemCount:
-                                                      listViewCadastroHospedeRowList
-                                                          .length,
-                                                  itemBuilder:
-                                                      (context, listViewIndex) {
-                                                    final listViewCadastroHospedeRow =
-                                                        listViewCadastroHospedeRowList[
-                                                            listViewIndex];
-                                                    return Align(
+                                                  children: [
+                                                    Align(
                                                       alignment:
                                                           AlignmentDirectional(
                                                               0.0, -1.0),
@@ -1152,8 +881,8 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                                                 child: Text(
                                                                   valueOrDefault<
                                                                       String>(
-                                                                    listViewCadastroHospedeRow
-                                                                        .nome,
+                                                                    listViewCadastroUsuarioRow
+                                                                        ?.nome,
                                                                     'nome',
                                                                   ),
                                                                   style: FlutterFlowTheme.of(
@@ -1176,9 +905,9 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                                                 child: Text(
                                                                   valueOrDefault<
                                                                       String>(
-                                                                    listViewCadastroHospedeRow
-                                                                        .telefone,
-                                                                    'null',
+                                                                    listViewCadastroUsuarioRow
+                                                                        ?.telefone,
+                                                                    'Telefone',
                                                                   ),
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
@@ -1200,9 +929,9 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                                                 child: Text(
                                                                   valueOrDefault<
                                                                       String>(
-                                                                    listViewCadastroHospedeRow
-                                                                        .email,
-                                                                    'null',
+                                                                    listViewCadastroUsuarioRow
+                                                                        ?.email,
+                                                                    'E-mail',
                                                                   ),
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
@@ -1219,19 +948,60 @@ class _PagCadastroUsuarioWidgetState extends State<PagCadastroUsuarioWidget> {
                                                                       ),
                                                                 ),
                                                               ),
-                                                              Icon(
-                                                                Icons.edit_note,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryText,
-                                                                size: 24.0,
+                                                              InkWell(
+                                                                splashColor: Colors
+                                                                    .transparent,
+                                                                focusColor: Colors
+                                                                    .transparent,
+                                                                hoverColor: Colors
+                                                                    .transparent,
+                                                                highlightColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                onTap:
+                                                                    () async {
+                                                                  context
+                                                                      .pushNamed(
+                                                                    'pagAlterarUsuario',
+                                                                    queryParameters:
+                                                                        {
+                                                                      'cadastroUser':
+                                                                          serializeParam(
+                                                                        listViewCadastroUsuarioRow,
+                                                                        ParamType
+                                                                            .SupabaseRow,
+                                                                      ),
+                                                                    }.withoutNulls,
+                                                                    extra: <String,
+                                                                        dynamic>{
+                                                                      kTransitionInfoKey:
+                                                                          TransitionInfo(
+                                                                        hasTransition:
+                                                                            true,
+                                                                        transitionType:
+                                                                            PageTransitionType.fade,
+                                                                        duration:
+                                                                            Duration(milliseconds: 0),
+                                                                      ),
+                                                                    },
+                                                                  );
+                                                                },
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .edit_note,
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                                  size: 24.0,
+                                                                ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                    );
-                                                  },
+                                                    ),
+                                                  ].divide(
+                                                      SizedBox(height: 4.0)),
                                                 );
                                               },
                                             ),
