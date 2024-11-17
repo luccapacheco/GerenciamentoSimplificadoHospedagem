@@ -24,7 +24,6 @@ class PagReservasModel extends FlutterFlowModel<PagReservasWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Model for menuLateral component.
   late MenuLateralModel menuLateralModel;
   // Model for menuSuperior component.
@@ -38,20 +37,10 @@ class PagReservasModel extends FlutterFlowModel<PagReservasWidget> {
   TextEditingController? txtCpfTextController;
   final txtCpfMask = MaskTextInputFormatter(mask: '###.###.###-##');
   String? Function(BuildContext, String?)? txtCpfTextControllerValidator;
-  // State field(s) for TxtRg widget.
-  FocusNode? txtRgFocusNode;
-  TextEditingController? txtRgTextController;
-  final txtRgMask = MaskTextInputFormatter(mask: '#.###.###');
-  String? Function(BuildContext, String?)? txtRgTextControllerValidator;
   // State field(s) for Txtcidade widget.
   FocusNode? txtcidadeFocusNode;
   TextEditingController? txtcidadeTextController;
   String? Function(BuildContext, String?)? txtcidadeTextControllerValidator;
-  // State field(s) for TxtDataNasc widget.
-  FocusNode? txtDataNascFocusNode;
-  TextEditingController? txtDataNascTextController;
-  final txtDataNascMask = MaskTextInputFormatter(mask: '##/##/####');
-  String? Function(BuildContext, String?)? txtDataNascTextControllerValidator;
   // State field(s) for DropDown widget.
   String? dropDownValue;
   FormFieldController<String>? dropDownValueController;
@@ -60,14 +49,14 @@ class PagReservasModel extends FlutterFlowModel<PagReservasWidget> {
   FormFieldController<String>? dpdAcomoValueController;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode1;
-  TextEditingController? textController6;
+  TextEditingController? textController4;
   final textFieldMask1 = MaskTextInputFormatter(mask: '##/##/####');
-  String? Function(BuildContext, String?)? textController6Validator;
+  String? Function(BuildContext, String?)? textController4Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode2;
-  TextEditingController? textController7;
+  TextEditingController? textController5;
   final textFieldMask2 = MaskTextInputFormatter(mask: '##/##/####');
-  String? Function(BuildContext, String?)? textController7Validator;
+  String? Function(BuildContext, String?)? textController5Validator;
   // State field(s) for TxtEmail widget.
   FocusNode? txtEmailFocusNode;
   TextEditingController? txtEmailTextController;
@@ -88,7 +77,6 @@ class PagReservasModel extends FlutterFlowModel<PagReservasWidget> {
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     menuLateralModel.dispose();
     menuSuperiorModel.dispose();
     txtNomeFocusNode?.dispose();
@@ -97,20 +85,14 @@ class PagReservasModel extends FlutterFlowModel<PagReservasWidget> {
     txtCpfFocusNode?.dispose();
     txtCpfTextController?.dispose();
 
-    txtRgFocusNode?.dispose();
-    txtRgTextController?.dispose();
-
     txtcidadeFocusNode?.dispose();
     txtcidadeTextController?.dispose();
 
-    txtDataNascFocusNode?.dispose();
-    txtDataNascTextController?.dispose();
-
     textFieldFocusNode1?.dispose();
-    textController6?.dispose();
+    textController4?.dispose();
 
     textFieldFocusNode2?.dispose();
-    textController7?.dispose();
+    textController5?.dispose();
 
     txtEmailFocusNode?.dispose();
     txtEmailTextController?.dispose();
