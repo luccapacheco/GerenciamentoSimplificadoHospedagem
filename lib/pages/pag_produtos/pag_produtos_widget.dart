@@ -649,7 +649,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                             },
                                             text: 'Salvar',
                                             options: FFButtonOptions(
-                                              height: 50.0,
+                                              height: 30.0,
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       24.0, 0.0, 24.0, 0.0),
@@ -689,7 +689,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                             },
                                             text: 'Limpar',
                                             options: FFButtonOptions(
-                                              height: 50.0,
+                                              height: 30.0,
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       24.0, 0.0, 24.0, 0.0),
@@ -822,7 +822,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                                             },
                                             text: 'Pesquisar',
                                             options: FFButtonOptions(
-                                              height: 25.0,
+                                              height: 30.0,
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       24.0, 0.0, 24.0, 0.0),
