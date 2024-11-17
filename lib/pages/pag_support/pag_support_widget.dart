@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_support_model.dart';
 export 'pag_support_model.dart';
 
@@ -30,7 +31,7 @@ class _PagSupportWidgetState extends State<PagSupportWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'suporte';
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.textController1 ??= TextEditingController();
@@ -41,6 +42,8 @@ class _PagSupportWidgetState extends State<PagSupportWidget> {
 
     _model.textController3 ??= TextEditingController();
     _model.textFieldFocusNode3 ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -55,9 +58,7 @@ class _PagSupportWidgetState extends State<PagSupportWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -74,7 +75,7 @@ class _PagSupportWidgetState extends State<PagSupportWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -89,7 +90,7 @@ class _PagSupportWidgetState extends State<PagSupportWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
