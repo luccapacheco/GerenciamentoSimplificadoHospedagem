@@ -631,7 +631,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 300.0,
+                          height: 250.0,
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
