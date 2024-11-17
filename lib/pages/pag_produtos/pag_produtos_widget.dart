@@ -727,7 +727,7 @@ class _PagProdutosWidgetState extends State<PagProdutosWidget> {
                         ),
                         Container(
                           width: double.infinity,
-                          height: 300.0,
+                          height: 250.0,
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
