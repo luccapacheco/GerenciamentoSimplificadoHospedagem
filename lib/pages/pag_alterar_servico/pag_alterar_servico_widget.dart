@@ -591,7 +591,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                           },
                                           text: 'Alterar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
@@ -687,7 +687,7 @@ class _PagAlterarServicoWidgetState extends State<PagAlterarServicoWidget> {
                                           },
                                           text: 'Deletar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
