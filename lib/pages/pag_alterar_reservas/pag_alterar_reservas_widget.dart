@@ -13,6 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_alterar_reservas_model.dart';
 export 'pag_alterar_reservas_model.dart';
 
@@ -42,35 +43,70 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'reservas';
-      setState(() {});
+      safeSetState(() {});
     });
 
-    _model.txtNomeTextController ??= TextEditingController();
+    _model.txtNomeTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.editarResetvas?.nome,
+      'Nome',
+    ));
     _model.txtNomeFocusNode ??= FocusNode();
 
-    _model.txtCpfTextController ??= TextEditingController();
+    _model.txtCpfTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.editarResetvas?.cpf,
+      'CPF',
+    ));
     _model.txtCpfFocusNode ??= FocusNode();
 
-    _model.txtRgTextController ??= TextEditingController();
+    _model.txtRgTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.editarResetvas?.rg,
+      'RG',
+    ));
     _model.txtRgFocusNode ??= FocusNode();
 
-    _model.txtcidadeTextController ??= TextEditingController();
+    _model.txtcidadeTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.editarResetvas?.cidade,
+      'Cidade',
+    ));
     _model.txtcidadeFocusNode ??= FocusNode();
 
-    _model.txtDataNascTextController ??= TextEditingController();
+    _model.txtDataNascTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.editarResetvas?.dataNascimento,
+      'Data de Nascimento',
+    ));
     _model.txtDataNascFocusNode ??= FocusNode();
 
-    _model.textController6 ??= TextEditingController();
+    _model.textController6 ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.editarResetvas?.checkIn,
+      'Check-In',
+    ));
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController7 ??= TextEditingController();
+    _model.textController7 ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.editarResetvas?.checkOut,
+      'Check-Out',
+    ));
     _model.textFieldFocusNode2 ??= FocusNode();
 
-    _model.txtEmailTextController ??= TextEditingController();
+    _model.txtEmailTextController ??=
+        TextEditingController(text: widget!.editarResetvas?.email);
     _model.txtEmailFocusNode ??= FocusNode();
 
-    _model.txtTelefoneTextController ??= TextEditingController();
+    _model.txtTelefoneTextController ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.editarResetvas?.telefone,
+      'Telefone',
+    ));
     _model.txtTelefoneFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -85,9 +121,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -104,7 +138,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -119,7 +153,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -171,7 +205,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             labelText:
-                                                widget.editarResetvas?.nome,
+                                                widget!.editarResetvas?.nome,
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelMedium
@@ -250,7 +284,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             labelText:
-                                                widget.editarResetvas?.cpf,
+                                                widget!.editarResetvas?.cpf,
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelMedium
@@ -330,7 +364,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             labelText:
-                                                widget.editarResetvas?.rg,
+                                                widget!.editarResetvas?.rg,
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelMedium
@@ -415,7 +449,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             labelText:
-                                                widget.editarResetvas?.cidade,
+                                                widget!.editarResetvas?.cidade,
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelMedium
@@ -494,7 +528,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
-                                            labelText: widget
+                                            labelText: widget!
                                                 .editarResetvas?.dataNascimento,
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
@@ -569,9 +603,15 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                       ),
                                       Expanded(
                                         child: FlutterFlowDropDown<String>(
-                                          controller: _model
-                                                  .dropDownValueController ??=
-                                              FormFieldController<String>(null),
+                                          controller:
+                                              _model.dropDownValueController ??=
+                                                  FormFieldController<String>(
+                                            _model.dropDownValue ??=
+                                                valueOrDefault<String>(
+                                              widget!.editarResetvas?.uf,
+                                              'UF',
+                                            ),
+                                          ),
                                           options: [
                                             'AC',
                                             'AL',
@@ -600,7 +640,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                             'SP',
                                             'TO'
                                           ],
-                                          onChanged: (val) => setState(
+                                          onChanged: (val) => safeSetState(
                                               () => _model.dropDownValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -642,9 +682,15 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       FlutterFlowDropDown<String>(
-                                        controller: _model
-                                                .dpdAcomoValueController ??=
-                                            FormFieldController<String>(null),
+                                        controller:
+                                            _model.dpdAcomoValueController ??=
+                                                FormFieldController<String>(
+                                          _model.dpdAcomoValue ??=
+                                              valueOrDefault<String>(
+                                            widget!.editarResetvas?.acomodacao,
+                                            'Acomodação',
+                                          ),
+                                        ),
                                         options: [
                                           'Domo',
                                           'Charrua (Bus)',
@@ -653,7 +699,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                           'Cabana',
                                           'Estacionamento para Overlandrs'
                                         ],
-                                        onChanged: (val) => setState(
+                                        onChanged: (val) => safeSetState(
                                             () => _model.dpdAcomoValue = val),
                                         width: 300.0,
                                         height: 50.0,
@@ -697,7 +743,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                             autofocus: true,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText: widget
+                                              labelText: widget!
                                                   .editarResetvas?.checkIn,
                                               labelStyle:
                                                   FlutterFlowTheme.of(context)
@@ -785,7 +831,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                             autofocus: true,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText: widget
+                                              labelText: widget!
                                                   .editarResetvas?.checkOut,
                                               labelStyle:
                                                   FlutterFlowTheme.of(context)
@@ -876,7 +922,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             labelText:
-                                                widget.editarResetvas?.email,
+                                                widget!.editarResetvas?.email,
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelMedium
@@ -955,8 +1001,8 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
-                                            labelText:
-                                                widget.editarResetvas?.telefone,
+                                            labelText: widget!
+                                                .editarResetvas?.telefone,
                                             labelStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelMedium
@@ -1062,7 +1108,10 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                                     .txtTelefoneTextController
                                                     .text,
                                               },
-                                              matchingRows: (rows) => rows,
+                                              matchingRows: (rows) => rows.eq(
+                                                'id',
+                                                widget!.editarResetvas!.id,
+                                              ),
                                             );
                                             await showDialog(
                                               context: context,
@@ -1082,32 +1131,125 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                                 );
                                               },
                                             );
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.txtNomeTextController
-                                                  ?.clear();
+                                                      ?.text =
+                                                  valueOrDefault<String>(
+                                                widget!.editarResetvas?.nome,
+                                                'Nome',
+                                              );
+
                                               _model.txtCpfTextController
-                                                  ?.clear();
-                                              _model.txtRgTextController
-                                                  ?.clear();
+                                                      ?.text =
+                                                  valueOrDefault<String>(
+                                                widget!.editarResetvas?.cpf,
+                                                'CPF',
+                                              );
+
+                                              _model.txtCpfMask.updateMask(
+                                                newValue: TextEditingValue(
+                                                    text:
+                                                        valueOrDefault<String>(
+                                                  widget!.editarResetvas?.cpf,
+                                                  'CPF',
+                                                )),
+                                              );
+                                              _model.txtRgTextController?.text =
+                                                  valueOrDefault<String>(
+                                                widget!.editarResetvas?.rg,
+                                                'RG',
+                                              );
+
+                                              _model.txtRgMask.updateMask(
+                                                newValue: TextEditingValue(
+                                                    text:
+                                                        valueOrDefault<String>(
+                                                  widget!.editarResetvas?.rg,
+                                                  'RG',
+                                                )),
+                                              );
                                               _model.txtcidadeTextController
-                                                  ?.clear();
+                                                      ?.text =
+                                                  valueOrDefault<String>(
+                                                widget!.editarResetvas?.cidade,
+                                                'Cidade',
+                                              );
+
                                               _model.txtDataNascTextController
-                                                  ?.clear();
-                                              _model.textController6?.clear();
-                                              _model.textController7?.clear();
+                                                      ?.text =
+                                                  valueOrDefault<String>(
+                                                widget!.editarResetvas
+                                                    ?.dataNascimento,
+                                                'Data de Nascimento',
+                                              );
+
+                                              _model.txtDataNascMask.updateMask(
+                                                newValue: TextEditingValue(
+                                                    text:
+                                                        valueOrDefault<String>(
+                                                  widget!.editarResetvas
+                                                      ?.dataNascimento,
+                                                  'Data de Nascimento',
+                                                )),
+                                              );
+                                              _model.textController6?.text =
+                                                  valueOrDefault<String>(
+                                                widget!.editarResetvas?.checkIn,
+                                                'Check-In',
+                                              );
+
+                                              _model.textFieldMask1.updateMask(
+                                                newValue: TextEditingValue(
+                                                    text:
+                                                        valueOrDefault<String>(
+                                                  widget!
+                                                      .editarResetvas?.checkIn,
+                                                  'Check-In',
+                                                )),
+                                              );
+                                              _model.textController7?.text =
+                                                  valueOrDefault<String>(
+                                                widget!
+                                                    .editarResetvas?.checkOut,
+                                                'Check-Out',
+                                              );
+
+                                              _model.textFieldMask2.updateMask(
+                                                newValue: TextEditingValue(
+                                                    text:
+                                                        valueOrDefault<String>(
+                                                  widget!
+                                                      .editarResetvas?.checkOut,
+                                                  'Check-Out',
+                                                )),
+                                              );
                                               _model.txtEmailTextController
-                                                  ?.clear();
+                                                      ?.text =
+                                                  widget!
+                                                      .editarResetvas!.email!;
+
                                               _model.txtTelefoneTextController
-                                                  ?.clear();
+                                                      ?.text =
+                                                  valueOrDefault<String>(
+                                                widget!
+                                                    .editarResetvas?.telefone,
+                                                'Telefone',
+                                              );
+
+                                              _model.txtTelefoneMask.updateMask(
+                                                newValue: TextEditingValue(
+                                                    text:
+                                                        valueOrDefault<String>(
+                                                  widget!
+                                                      .editarResetvas?.telefone,
+                                                  'Telefone',
+                                                )),
+                                              );
                                             });
-                                            setState(() {
-                                              _model.dropDownValueController
-                                                  ?.reset();
-                                              _model.dpdAcomoValueController
-                                                  ?.reset();
-                                            });
+
+                                            context.pushNamed('pagReservas');
                                           },
-                                          text: 'Editar',
+                                          text: 'Alterar',
                                           options: FFButtonOptions(
                                             height: 50.0,
                                             padding:
@@ -1139,30 +1281,62 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                       Expanded(
                                         child: FFButtonWidget(
                                           onPressed: () async {
-                                            setState(() {
-                                              _model.txtNomeTextController
-                                                  ?.clear();
-                                              _model.txtCpfTextController
-                                                  ?.clear();
-                                              _model.txtRgTextController
-                                                  ?.clear();
-                                              _model.txtcidadeTextController
-                                                  ?.clear();
-                                              _model.txtDataNascTextController
-                                                  ?.clear();
-                                              _model.textController6?.clear();
-                                              _model.txtEmailTextController
-                                                  ?.clear();
-                                              _model.textController7?.clear();
-                                              _model.txtTelefoneTextController
-                                                  ?.clear();
-                                            });
-                                            setState(() {
-                                              _model.dropDownValueController
-                                                  ?.reset();
-                                              _model.dpdAcomoValueController
-                                                  ?.reset();
-                                            });
+                                            var confirmDialogResponse =
+                                                await showDialog<bool>(
+                                                      context: context,
+                                                      builder:
+                                                          (alertDialogContext) {
+                                                        return AlertDialog(
+                                                          title: Text('Aviso'),
+                                                          content: Text(
+                                                              'Você deseja deletar?'),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext,
+                                                                      false),
+                                                              child: Text(
+                                                                  'Cancelar'),
+                                                            ),
+                                                            TextButton(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext,
+                                                                      true),
+                                                              child: Text(
+                                                                  'Confirmar'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    ) ??
+                                                    false;
+                                            if (confirmDialogResponse) {
+                                              await CadastroReservasTable()
+                                                  .delete(
+                                                matchingRows: (rows) => rows.eq(
+                                                  'id',
+                                                  widget!.editarResetvas!.id,
+                                                ),
+                                              );
+
+                                              context.pushNamed('pagReservas');
+                                            } else {
+                                              context.pushNamed(
+                                                'pagReservas',
+                                                extra: <String, dynamic>{
+                                                  kTransitionInfoKey:
+                                                      TransitionInfo(
+                                                    hasTransition: true,
+                                                    transitionType:
+                                                        PageTransitionType.fade,
+                                                    duration: Duration(
+                                                        milliseconds: 0),
+                                                  ),
+                                                },
+                                              );
+                                            }
                                           },
                                           text: 'Deletar',
                                           options: FFButtonOptions(
@@ -1334,7 +1508,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                         ),
                                       ),
                                       Text(
-                                        dateTimeFormat('d/M/y', _model.dataIni),
+                                        dateTimeFormat("d/M/y", _model.dataIni),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -1438,7 +1612,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                         ),
                                       ),
                                       Text(
-                                        dateTimeFormat('d/M/y', _model.dataFim),
+                                        dateTimeFormat("d/M/y", _model.dataFim),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -1490,92 +1664,6 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0.0, -1.0),
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 25.0,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(8.0),
-                                          bottomRight: Radius.circular(8.0),
-                                          topLeft: Radius.circular(8.0),
-                                          topRight: Radius.circular(8.0),
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 0.0, 16.0, 0.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                'Acomodação',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                'Hóspede',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                'Check-In',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.edit_note,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              size: 24.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
                                   flex: 4,
                                   child:
                                       FutureBuilder<List<CadastroReservasRow>>(
@@ -1602,13 +1690,16 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                       List<CadastroReservasRow>
                                           listViewCadastroReservasRowList =
                                           snapshot.data!;
-                                      return ListView.builder(
+
+                                      return ListView.separated(
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
                                         scrollDirection: Axis.vertical,
                                         itemCount:
                                             listViewCadastroReservasRowList
                                                 .length,
+                                        separatorBuilder: (_, __) =>
+                                            SizedBox(height: 4.0),
                                         itemBuilder: (context, listViewIndex) {
                                           final listViewCadastroReservasRow =
                                               listViewCadastroReservasRowList[
@@ -1647,7 +1738,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroReservasRow
                                                               .acomodacao,
-                                                          'null',
+                                                          'Acomodações',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -1670,7 +1761,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroReservasRow
                                                               .nome,
-                                                          'null',
+                                                          'Hóspede',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -1693,7 +1784,7 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroReservasRow
                                                               .checkIn,
-                                                          'null',
+                                                          'Check-In',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -1710,13 +1801,50 @@ class _PagAlterarReservasWidgetState extends State<PagAlterarReservasWidget> {
                                                             ),
                                                       ),
                                                     ),
-                                                    Icon(
-                                                      Icons.edit_note,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryText,
-                                                      size: 24.0,
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'pagAlterarReservas',
+                                                          queryParameters: {
+                                                            'editarResetvas':
+                                                                serializeParam(
+                                                              listViewCadastroReservasRow,
+                                                              ParamType
+                                                                  .SupabaseRow,
+                                                            ),
+                                                          }.withoutNulls,
+                                                          extra: <String,
+                                                              dynamic>{
+                                                            kTransitionInfoKey:
+                                                                TransitionInfo(
+                                                              hasTransition:
+                                                                  true,
+                                                              transitionType:
+                                                                  PageTransitionType
+                                                                      .fade,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      0),
+                                                            ),
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Icon(
+                                                        Icons.edit_note,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        size: 24.0,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
