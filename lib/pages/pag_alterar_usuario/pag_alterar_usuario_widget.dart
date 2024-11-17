@@ -718,7 +718,7 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                                           },
                                           text: 'Alterar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
@@ -840,13 +840,6 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                                             } else {
                                               context.pushNamed(
                                                 'pagCadastroUsuario',
-                                                queryParameters: {
-                                                  'cadastroUser':
-                                                      serializeParam(
-                                                    widget!.cadastroUser,
-                                                    ParamType.SupabaseRow,
-                                                  ),
-                                                }.withoutNulls,
                                                 extra: <String, dynamic>{
                                                   kTransitionInfoKey:
                                                       TransitionInfo(
@@ -862,7 +855,7 @@ class _PagAlterarUsuarioWidgetState extends State<PagAlterarUsuarioWidget> {
                                           },
                                           text: 'Deletar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
