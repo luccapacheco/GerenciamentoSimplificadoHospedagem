@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import 'menu_lateral_model.dart';
 export 'menu_lateral_model.dart';
 
@@ -26,6 +27,8 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MenuLateralModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -351,39 +354,6 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
                 ),
               ),
             ),
-            Container(
-              width: double.infinity,
-              height: 50.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(8.0),
-                  bottomRight: Radius.circular(8.0),
-                  topLeft: Radius.circular(8.0),
-                  topRight: Radius.circular(8.0),
-                ),
-                border: Border.all(
-                  color: FlutterFlowTheme.of(context).secondaryText,
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Icon(
-                    Icons.bedroom_parent,
-                    color: FlutterFlowTheme.of(context).primaryBackground,
-                    size: 30.0,
-                  ),
-                  Text(
-                    'Acomodações',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Readex Pro',
-                          color: FlutterFlowTheme.of(context).primaryBackground,
-                          letterSpacing: 0.0,
-                        ),
-                  ),
-                ].divide(SizedBox(width: 12.0)).around(SizedBox(width: 12.0)),
-              ),
-            ),
             InkWell(
               splashColor: Colors.transparent,
               focusColor: Colors.transparent,
@@ -439,50 +409,40 @@ class _MenuLateralWidgetState extends State<MenuLateralWidget> {
                 ),
               ),
             ),
-            InkWell(
-              splashColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () async {
-                context.pushNamed('pagCadastroUsuario');
-              },
-              child: Container(
-                width: double.infinity,
-                height: 50.0,
-                decoration: BoxDecoration(
-                  color: FFAppState().nomePagina == 'usuario'
-                      ? FlutterFlowTheme.of(context).secondaryText
-                      : Color(0x00000000),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                    topLeft: Radius.circular(8.0),
-                    topRight: Radius.circular(8.0),
-                  ),
-                  border: Border.all(
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                  ),
+            Container(
+              width: double.infinity,
+              height: 50.0,
+              decoration: BoxDecoration(
+                color: FFAppState().nomePagina == 'usuario'
+                    ? FlutterFlowTheme.of(context).secondaryText
+                    : Color(0x00000000),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
+                  topLeft: Radius.circular(8.0),
+                  topRight: Radius.circular(8.0),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Icon(
-                      Icons.person_add_alt_1,
-                      color: FlutterFlowTheme.of(context).primaryBackground,
-                      size: 30.0,
-                    ),
-                    Text(
-                      'Cadastrar Usuário',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Readex Pro',
-                            color:
-                                FlutterFlowTheme.of(context).primaryBackground,
-                            letterSpacing: 0.0,
-                          ),
-                    ),
-                  ].divide(SizedBox(width: 12.0)).around(SizedBox(width: 12.0)),
+                border: Border.all(
+                  color: FlutterFlowTheme.of(context).secondaryText,
                 ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Icon(
+                    Icons.person_add_alt_1,
+                    color: FlutterFlowTheme.of(context).primaryBackground,
+                    size: 30.0,
+                  ),
+                  Text(
+                    'Cadastrar Usuário',
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Readex Pro',
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                          letterSpacing: 0.0,
+                        ),
+                  ),
+                ].divide(SizedBox(width: 12.0)).around(SizedBox(width: 12.0)),
               ),
             ),
             InkWell(
