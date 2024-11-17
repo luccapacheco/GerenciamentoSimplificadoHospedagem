@@ -8,11 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_home_model.dart';
 export 'pag_home_model.dart';
 
 class PagHomeWidget extends StatefulWidget {
-  const PagHomeWidget({super.key});
+  const PagHomeWidget({
+    super.key,
+    this.alterarReserva,
+    this.alteraservices,
+  });
+
+  final CadastroReservasRow? alterarReserva;
+  final CadastroServicosRow? alteraservices;
 
   @override
   State<PagHomeWidget> createState() => _PagHomeWidgetState();
@@ -31,8 +39,10 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'home';
-      setState(() {});
+      safeSetState(() {});
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -47,9 +57,7 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -66,7 +74,7 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -81,7 +89,7 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -236,13 +244,16 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
                                         List<CadastroReservasRow>
                                             listViewCadastroReservasRowList =
                                             snapshot.data!;
-                                        return ListView.builder(
+
+                                        return ListView.separated(
                                           padding: EdgeInsets.zero,
                                           shrinkWrap: true,
                                           scrollDirection: Axis.vertical,
                                           itemCount:
                                               listViewCadastroReservasRowList
                                                   .length,
+                                          separatorBuilder: (_, __) =>
+                                              SizedBox(height: 4.0),
                                           itemBuilder:
                                               (context, listViewIndex) {
                                             final listViewCadastroReservasRow =
@@ -285,7 +296,7 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
                                                               String>(
                                                             listViewCadastroReservasRow
                                                                 .acomodacao,
-                                                            'null',
+                                                            'Acomodação',
                                                           ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
@@ -309,7 +320,7 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
                                                               String>(
                                                             listViewCadastroReservasRow
                                                                 .nome,
-                                                            'null',
+                                                            'Hóspede',
                                                           ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
@@ -333,7 +344,7 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
                                                               String>(
                                                             listViewCadastroReservasRow
                                                                 .checkIn,
-                                                            'null',
+                                                            'Check-In',
                                                           ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
@@ -350,13 +361,49 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
                                                               ),
                                                         ),
                                                       ),
-                                                      Icon(
-                                                        Icons.edit_note,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        size: 24.0,
+                                                      InkWell(
+                                                        splashColor:
+                                                            Colors.transparent,
+                                                        focusColor:
+                                                            Colors.transparent,
+                                                        hoverColor:
+                                                            Colors.transparent,
+                                                        highlightColor:
+                                                            Colors.transparent,
+                                                        onTap: () async {
+                                                          context.pushNamed(
+                                                            'pagAlterarReservas',
+                                                            queryParameters: {
+                                                              'editarResetvas':
+                                                                  serializeParam(
+                                                                listViewCadastroReservasRow,
+                                                                ParamType
+                                                                    .SupabaseRow,
+                                                              ),
+                                                            }.withoutNulls,
+                                                            extra: <String,
+                                                                dynamic>{
+                                                              kTransitionInfoKey:
+                                                                  TransitionInfo(
+                                                                hasTransition:
+                                                                    true,
+                                                                transitionType:
+                                                                    PageTransitionType
+                                                                        .fade,
+                                                                duration: Duration(
+                                                                    milliseconds:
+                                                                        0),
+                                                              ),
+                                                            },
+                                                          );
+                                                        },
+                                                        child: Icon(
+                                                          Icons.edit_note,
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                          size: 24.0,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -524,13 +571,16 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
                                       List<CadastroServicosRow>
                                           listViewCadastroServicosRowList =
                                           snapshot.data!;
-                                      return ListView.builder(
+
+                                      return ListView.separated(
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
                                         scrollDirection: Axis.vertical,
                                         itemCount:
                                             listViewCadastroServicosRowList
                                                 .length,
+                                        separatorBuilder: (_, __) =>
+                                            SizedBox(height: 4.0),
                                         itemBuilder: (context, listViewIndex) {
                                           final listViewCadastroServicosRow =
                                               listViewCadastroServicosRowList[
@@ -632,13 +682,51 @@ class _PagHomeWidgetState extends State<PagHomeWidget> {
                                                             ),
                                                       ),
                                                     ),
-                                                    Icon(
-                                                      Icons.edit_note,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryText,
-                                                      size: 24.0,
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'pagAlterarServico',
+                                                          queryParameters: {
+                                                            'queryService':
+                                                                serializeParam(
+                                                              widget!
+                                                                  .alteraservices,
+                                                              ParamType
+                                                                  .SupabaseRow,
+                                                            ),
+                                                          }.withoutNulls,
+                                                          extra: <String,
+                                                              dynamic>{
+                                                            kTransitionInfoKey:
+                                                                TransitionInfo(
+                                                              hasTransition:
+                                                                  true,
+                                                              transitionType:
+                                                                  PageTransitionType
+                                                                      .fade,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      0),
+                                                            ),
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Icon(
+                                                        Icons.edit_note,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        size: 24.0,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
