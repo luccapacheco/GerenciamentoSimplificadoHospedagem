@@ -678,7 +678,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                           },
                                           text: 'Alterar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
@@ -767,7 +767,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                           },
                                           text: 'Deletar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
