@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_servico_model.dart';
 export 'pag_servico_model.dart';
 
@@ -34,7 +35,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'servicos';
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.txtHoraTextController ??= TextEditingController();
@@ -42,6 +43,8 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
 
     _model.txtDataTextController ??= TextEditingController();
     _model.txtDataFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -56,9 +59,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -75,7 +76,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -90,7 +91,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -142,7 +143,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                             'Limpeza',
                                             'Serviço de quarto'
                                           ],
-                                          onChanged: (val) => setState(() =>
+                                          onChanged: (val) => safeSetState(() =>
                                               _model.dpdServioValue = val),
                                           width: 300.0,
                                           height: 56.0,
@@ -364,7 +365,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                             'Cabana',
                                             'Estacionamento para overlandrs'
                                           ],
-                                          onChanged: (val) => setState(
+                                          onChanged: (val) => safeSetState(
                                               () => _model.dpdAcomoValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -417,7 +418,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                             'Camareira',
                                             'Zelador'
                                           ],
-                                          onChanged: (val) => setState(
+                                          onChanged: (val) => safeSetState(
                                               () => _model.dpdFunciValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -465,7 +466,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                             'Confirmado',
                                             'Não condirmado'
                                           ],
-                                          onChanged: (val) => setState(() =>
+                                          onChanged: (val) => safeSetState(() =>
                                               _model.dpdStatusValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -573,7 +574,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                       Expanded(
                                         child: FFButtonWidget(
                                           onPressed: () async {
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.dpdFunciValueController
                                                   ?.reset();
                                               _model.dpdServioValueController
@@ -583,11 +584,13 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                               _model.dpdStatusValueController
                                                   ?.reset();
                                             });
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.txtHoraTextController
                                                   ?.clear();
+                                              _model.txtHoraMask.clear();
                                               _model.txtDataTextController
                                                   ?.clear();
+                                              _model.txtDataMask.clear();
                                             });
                                           },
                                           text: 'Limpar',
@@ -653,7 +656,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 8.0, 0.0, 8.0),
                                     child: Text(
-                                      'Pesquisar Serviços',
+                                      'Serviços Solicitados',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -661,140 +664,6 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                             fontSize: 18.0,
                                             letterSpacing: 0.0,
                                           ),
-                                    ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 8.0),
-                                          child: FFButtonWidget(
-                                            onPressed: () {
-                                              print('Button pressed ...');
-                                            },
-                                            text: 'Pesquisar',
-                                            options: FFButtonOptions(
-                                              height: 25.0,
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      24.0, 0.0, 24.0, 0.0),
-                                              iconPadding: EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        color: Colors.white,
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                              elevation: 3.0,
-                                              borderSide: BorderSide(
-                                                color: Colors.transparent,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0.0, -1.0),
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 25.0,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(8.0),
-                                          bottomRight: Radius.circular(8.0),
-                                          topLeft: Radius.circular(8.0),
-                                          topRight: Radius.circular(8.0),
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 0.0, 16.0, 0.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                'Acomodação',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                'Data',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 2,
-                                              child: Text(
-                                                'Status',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              'Readex Pro',
-                                                          fontSize: 14.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.edit_note,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              size: 24.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
                                     ),
                                   ),
                                 ),
@@ -825,13 +694,16 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                       List<CadastroServicosRow>
                                           listViewCadastroServicosRowList =
                                           snapshot.data!;
-                                      return ListView.builder(
+
+                                      return ListView.separated(
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
                                         scrollDirection: Axis.vertical,
                                         itemCount:
                                             listViewCadastroServicosRowList
                                                 .length,
+                                        separatorBuilder: (_, __) =>
+                                            SizedBox(height: 4.0),
                                         itemBuilder: (context, listViewIndex) {
                                           final listViewCadastroServicosRow =
                                               listViewCadastroServicosRowList[
@@ -870,7 +742,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroServicosRow
                                                               .acomodacao,
-                                                          'null',
+                                                          'Acomodação',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -893,7 +765,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroServicosRow
                                                               .dataField,
-                                                          'null',
+                                                          'Data',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -916,7 +788,7 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroServicosRow
                                                               .status,
-                                                          'null',
+                                                          'Status',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -945,6 +817,14 @@ class _PagServicoWidgetState extends State<PagServicoWidget> {
                                                       onTap: () async {
                                                         context.pushNamed(
                                                           'pagAlterarServico',
+                                                          queryParameters: {
+                                                            'queryService':
+                                                                serializeParam(
+                                                              listViewCadastroServicosRow,
+                                                              ParamType
+                                                                  .SupabaseRow,
+                                                            ),
+                                                          }.withoutNulls,
                                                           extra: <String,
                                                               dynamic>{
                                                             kTransitionInfoKey:
