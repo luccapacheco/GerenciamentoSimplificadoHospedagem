@@ -13,6 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_reservas_model.dart';
 export 'pag_reservas_model.dart';
 
@@ -36,7 +37,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'reservas';
-      setState(() {});
+      safeSetState(() {});
     });
 
     _model.txtNomeTextController ??= TextEditingController();
@@ -45,19 +46,13 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
     _model.txtCpfTextController ??= TextEditingController();
     _model.txtCpfFocusNode ??= FocusNode();
 
-    _model.txtRgTextController ??= TextEditingController();
-    _model.txtRgFocusNode ??= FocusNode();
-
     _model.txtcidadeTextController ??= TextEditingController();
     _model.txtcidadeFocusNode ??= FocusNode();
 
-    _model.txtDataNascTextController ??= TextEditingController();
-    _model.txtDataNascFocusNode ??= FocusNode();
-
-    _model.textController6 ??= TextEditingController();
+    _model.textController4 ??= TextEditingController();
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController7 ??= TextEditingController();
+    _model.textController5 ??= TextEditingController();
     _model.textFieldFocusNode2 ??= FocusNode();
 
     _model.txtEmailTextController ??= TextEditingController();
@@ -65,6 +60,8 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
 
     _model.txtTelefoneTextController ??= TextEditingController();
     _model.txtTelefoneFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -79,9 +76,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -98,7 +93,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -113,7 +108,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -312,85 +307,6 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                           inputFormatters: [_model.txtCpfMask],
                                         ),
                                       ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: TextFormField(
-                                          controller:
-                                              _model.txtRgTextController,
-                                          focusNode: _model.txtRgFocusNode,
-                                          autofocus: true,
-                                          obscureText: false,
-                                          decoration: InputDecoration(
-                                            labelText: 'RG',
-                                            labelStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .override(
-                                                      fontFamily: 'Open Sans',
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            hintText: 'Digite o RG',
-                                            hintStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .error,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            focusedErrorBorder:
-                                                OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .error,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                          ),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                letterSpacing: 0.0,
-                                              ),
-                                          validator: _model
-                                              .txtRgTextControllerValidator
-                                              .asValidator(context),
-                                          inputFormatters: [_model.txtRgMask],
-                                        ),
-                                      ),
                                     ].divide(SizedBox(width: 8.0)),
                                   ),
                                   Row(
@@ -475,88 +391,6 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                         ),
                                       ),
                                       Expanded(
-                                        flex: 2,
-                                        child: TextFormField(
-                                          controller:
-                                              _model.txtDataNascTextController,
-                                          focusNode:
-                                              _model.txtDataNascFocusNode,
-                                          autofocus: true,
-                                          obscureText: false,
-                                          decoration: InputDecoration(
-                                            labelText: 'Data Nacimento',
-                                            labelStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            hintText: 'dd/mm/aaaa',
-                                            hintStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .override(
-                                                      fontFamily: 'Readex Pro',
-                                                      letterSpacing: 0.0,
-                                                    ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .error,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                            focusedErrorBorder:
-                                                OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .error,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
-                                          ),
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                letterSpacing: 0.0,
-                                              ),
-                                          validator: _model
-                                              .txtDataNascTextControllerValidator
-                                              .asValidator(context),
-                                          inputFormatters: [
-                                            _model.txtDataNascMask
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
                                         child: FlutterFlowDropDown<String>(
                                           controller: _model
                                                   .dropDownValueController ??=
@@ -589,7 +423,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                             'SP',
                                             'TO'
                                           ],
-                                          onChanged: (val) => setState(
+                                          onChanged: (val) => safeSetState(
                                               () => _model.dropDownValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -642,7 +476,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                           'Cabana',
                                           'Estacionamento para Overlandrs'
                                         ],
-                                        onChanged: (val) => setState(
+                                        onChanged: (val) => safeSetState(
                                             () => _model.dpdAcomoValue = val),
                                         width: 300.0,
                                         height: 50.0,
@@ -680,7 +514,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   8.0, 0.0, 8.0, 0.0),
                                           child: TextFormField(
-                                            controller: _model.textController6,
+                                            controller: _model.textController4,
                                             focusNode:
                                                 _model.textFieldFocusNode1,
                                             autofocus: true,
@@ -753,7 +587,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                                   letterSpacing: 0.0,
                                                 ),
                                             validator: _model
-                                                .textController6Validator
+                                                .textController4Validator
                                                 .asValidator(context),
                                             inputFormatters: [
                                               _model.textFieldMask1
@@ -767,7 +601,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   8.0, 0.0, 0.0, 0.0),
                                           child: TextFormField(
-                                            controller: _model.textController7,
+                                            controller: _model.textController5,
                                             focusNode:
                                                 _model.textFieldFocusNode2,
                                             autofocus: true,
@@ -840,7 +674,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                                   letterSpacing: 0.0,
                                                 ),
                                             validator: _model
-                                                .textController7Validator
+                                                .textController5Validator
                                                 .asValidator(context),
                                             inputFormatters: [
                                               _model.textFieldMask2
@@ -1027,23 +861,19 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                                   .txtNomeTextController.text,
                                               'cpf': _model
                                                   .txtCpfTextController.text,
-                                              'rg': _model
-                                                  .txtRgTextController.text,
                                               'cidade': _model
                                                   .txtcidadeTextController.text,
                                               'uf': _model.dropDownValue,
-                                              'dataNascimento': _model
-                                                  .txtDataNascTextController
-                                                  .text,
                                               'acomodação':
                                                   _model.dpdAcomoValue,
                                               'checkIn':
-                                                  _model.textController6.text,
+                                                  _model.textController4.text,
                                               'checkOut':
-                                                  _model.textController7.text,
+                                                  _model.textController5.text,
                                               'telefone': _model
                                                   .txtTelefoneTextController
                                                   .text,
+                                              'rg': '',
                                             });
                                             await showDialog(
                                               context: context,
@@ -1063,29 +893,23 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                                 );
                                               },
                                             );
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.txtNomeTextController
                                                   ?.clear();
                                               _model.txtCpfTextController
                                                   ?.clear();
-                                              _model.txtRgTextController
-                                                  ?.clear();
+                                              _model.txtCpfMask.clear();
                                               _model.txtcidadeTextController
                                                   ?.clear();
-                                              _model.txtDataNascTextController
-                                                  ?.clear();
-                                              _model.textController6?.clear();
-                                              _model.textController7?.clear();
+                                              _model.textController4?.clear();
+                                              _model.textFieldMask1.clear();
+                                              _model.textController5?.clear();
+                                              _model.textFieldMask2.clear();
                                               _model.txtEmailTextController
                                                   ?.clear();
                                               _model.txtTelefoneTextController
                                                   ?.clear();
-                                            });
-                                            setState(() {
-                                              _model.dropDownValueController
-                                                  ?.reset();
-                                              _model.dpdAcomoValueController
-                                                  ?.reset();
+                                              _model.txtTelefoneMask.clear();
                                             });
                                           },
                                           text: 'Salvar',
@@ -1120,25 +944,25 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                       Expanded(
                                         child: FFButtonWidget(
                                           onPressed: () async {
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.txtNomeTextController
                                                   ?.clear();
                                               _model.txtCpfTextController
                                                   ?.clear();
-                                              _model.txtRgTextController
-                                                  ?.clear();
+                                              _model.txtCpfMask.clear();
                                               _model.txtcidadeTextController
                                                   ?.clear();
-                                              _model.txtDataNascTextController
-                                                  ?.clear();
-                                              _model.textController6?.clear();
+                                              _model.textController4?.clear();
+                                              _model.textFieldMask1.clear();
                                               _model.txtEmailTextController
                                                   ?.clear();
-                                              _model.textController7?.clear();
+                                              _model.textController5?.clear();
+                                              _model.textFieldMask2.clear();
                                               _model.txtTelefoneTextController
                                                   ?.clear();
+                                              _model.txtTelefoneMask.clear();
                                             });
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.dropDownValueController
                                                   ?.reset();
                                               _model.dpdAcomoValueController
@@ -1315,7 +1139,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                         ),
                                       ),
                                       Text(
-                                        dateTimeFormat('d/M/y', _model.dataIni),
+                                        dateTimeFormat("d/M/y", _model.dataIni),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -1419,7 +1243,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                         ),
                                       ),
                                       Text(
-                                        dateTimeFormat('d/M/y', _model.dataFim),
+                                        dateTimeFormat("d/M/y", _model.dataFim),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -1583,6 +1407,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                       List<CadastroReservasRow>
                                           listViewCadastroReservasRowList =
                                           snapshot.data!;
+
                                       return ListView.builder(
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
@@ -1628,7 +1453,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroReservasRow
                                                               .acomodacao,
-                                                          'null',
+                                                          'Acomodação',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -1651,7 +1476,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroReservasRow
                                                               .nome,
-                                                          'null',
+                                                          'Hóspede',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -1674,7 +1499,7 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                                         valueOrDefault<String>(
                                                           listViewCadastroReservasRow
                                                               .checkIn,
-                                                          'null',
+                                                          'Check-In',
                                                         ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
@@ -1691,13 +1516,50 @@ class _PagReservasWidgetState extends State<PagReservasWidget> {
                                                             ),
                                                       ),
                                                     ),
-                                                    Icon(
-                                                      Icons.edit_note,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryText,
-                                                      size: 24.0,
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'pagAlterarReservas',
+                                                          queryParameters: {
+                                                            'editarResetvas':
+                                                                serializeParam(
+                                                              listViewCadastroReservasRow,
+                                                              ParamType
+                                                                  .SupabaseRow,
+                                                            ),
+                                                          }.withoutNulls,
+                                                          extra: <String,
+                                                              dynamic>{
+                                                            kTransitionInfoKey:
+                                                                TransitionInfo(
+                                                              hasTransition:
+                                                                  true,
+                                                              transitionType:
+                                                                  PageTransitionType
+                                                                      .fade,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      0),
+                                                            ),
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Icon(
+                                                        Icons.edit_note,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        size: 24.0,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
