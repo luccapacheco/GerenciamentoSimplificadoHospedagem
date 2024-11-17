@@ -407,7 +407,7 @@ class _PagSupportWidgetState extends State<PagSupportWidget> {
                                           },
                                           text: 'Enviar',
                                           options: FFButtonOptions(
-                                            height: 50.0,
+                                            height: 30.0,
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     24.0, 0.0, 24.0, 0.0),
