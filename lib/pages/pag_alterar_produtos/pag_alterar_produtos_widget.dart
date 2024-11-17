@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+
 import 'pag_alterar_produtos_model.dart';
 export 'pag_alterar_produtos_model.dart';
 
@@ -40,23 +41,35 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().nomePagina = 'produto';
-      setState(() {});
+      safeSetState(() {});
     });
 
-    _model.txtNomePTextController ??= TextEditingController();
+    _model.txtNomePTextController ??= TextEditingController(text: 'Nome');
     _model.txtNomePFocusNode ??= FocusNode();
 
-    _model.txtQntTextController ??= TextEditingController();
+    _model.txtQntTextController ??=
+        TextEditingController(text: 'Quantidade em Estoque');
     _model.txtQntFocusNode ??= FocusNode();
 
-    _model.txtValorPTextController ??= TextEditingController();
+    _model.txtValorPTextController ??=
+        TextEditingController(text: 'Valor do Produto');
     _model.txtValorPFocusNode ??= FocusNode();
 
-    _model.textController4 ??= TextEditingController();
+    _model.textController4 ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarProduto?.codigoProduto,
+      'Código do Produto',
+    ));
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController5 ??= TextEditingController();
+    _model.textController5 ??= TextEditingController(
+        text: valueOrDefault<String>(
+      widget!.alterarProduto?.descricao,
+      'Descrição',
+    ));
     _model.textFieldFocusNode2 ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
@@ -71,9 +84,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -90,7 +101,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
               children: [
                 wrapWithModel(
                   model: _model.menuLateralModel,
-                  updateCallback: () => setState(() {}),
+                  updateCallback: () => safeSetState(() {}),
                   child: MenuLateralWidget(),
                 ),
                 Expanded(
@@ -105,7 +116,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                               0.0, 0.0, 0.0, 32.0),
                           child: wrapWithModel(
                             model: _model.menuSuperiorModel,
-                            updateCallback: () => setState(() {}),
+                            updateCallback: () => safeSetState(() {}),
                             child: MenuSuperiorWidget(),
                           ),
                         ),
@@ -165,7 +176,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                       letterSpacing: 0.0,
                                                     ),
                                             hintText:
-                                                widget.alterarProduto?.nome,
+                                                widget!.alterarProduto?.nome,
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
                                                     .labelMedium
@@ -243,7 +254,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                       fontFamily: 'Open Sans',
                                                       letterSpacing: 0.0,
                                                     ),
-                                            hintText: widget.alterarProduto
+                                            hintText: widget!.alterarProduto
                                                 ?.quantidadeEstoque,
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
@@ -322,7 +333,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                       fontFamily: 'Open Sans',
                                                       letterSpacing: 0.0,
                                                     ),
-                                            hintText: widget
+                                            hintText: widget!
                                                 .alterarProduto?.valorProduto,
                                             hintStyle:
                                                 FlutterFlowTheme.of(context)
@@ -403,7 +414,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                             'Chocolates',
                                             'Salgados'
                                           ],
-                                          onChanged: (val) => setState(
+                                          onChanged: (val) => safeSetState(
                                               () => _model.dpdCateValue = val),
                                           width: 300.0,
                                           height: 50.0,
@@ -414,8 +425,10 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                     fontFamily: 'Readex Pro',
                                                     letterSpacing: 0.0,
                                                   ),
-                                          hintText:
-                                              widget.alterarProduto?.categoria,
+                                          hintText: valueOrDefault<String>(
+                                            widget!.alterarProduto?.categoria,
+                                            'Categoria',
+                                          ),
                                           icon: Icon(
                                             Icons.keyboard_arrow_down_rounded,
                                             color: FlutterFlowTheme.of(context)
@@ -435,9 +448,17 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16.0, 4.0, 16.0, 4.0),
                                           hidesUnderline: true,
-                                          isOverButton: true,
+                                          isOverButton: false,
                                           isSearchable: false,
                                           isMultiSelect: false,
+                                          labelText: 'categoria',
+                                          labelTextStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    letterSpacing: 0.0,
+                                                  ),
                                         ),
                                       ),
                                       Expanded(
@@ -461,8 +482,11 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                             'Readex Pro',
                                                         letterSpacing: 0.0,
                                                       ),
-                                              hintText: widget.alterarProduto
-                                                  ?.codigoProduto,
+                                              hintText: valueOrDefault<String>(
+                                                widget!.alterarProduto
+                                                    ?.codigoProduto,
+                                                'Código do Produto',
+                                              ),
                                               hintStyle:
                                                   FlutterFlowTheme.of(context)
                                                       .labelMedium
@@ -533,15 +557,17 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                     autofocus: true,
                                     obscureText: false,
                                     decoration: InputDecoration(
-                                      labelText: 'Label here...',
+                                      labelText: 'Descrição',
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .labelMedium
                                           .override(
                                             fontFamily: 'Readex Pro',
                                             letterSpacing: 0.0,
                                           ),
-                                      hintText:
-                                          widget.alterarProduto?.descricao,
+                                      hintText: valueOrDefault<String>(
+                                        widget!.alterarProduto?.descricao,
+                                        'Descrição',
+                                      ),
                                       hintStyle: FlutterFlowTheme.of(context)
                                           .labelMedium
                                           .override(
@@ -618,7 +644,10 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                 'descricao':
                                                     _model.textController5.text,
                                               },
-                                              matchingRows: (rows) => rows,
+                                              matchingRows: (rows) => rows.eq(
+                                                'id',
+                                                widget!.alterarProduto!.id,
+                                              ),
                                             );
                                             await showDialog(
                                               context: context,
@@ -638,22 +667,14 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                 );
                                               },
                                             );
-                                            setState(() {
+                                            safeSetState(() {
                                               _model.dpdCateValueController
                                                   ?.reset();
                                               _model.dpdProdutoValueController
                                                   ?.reset();
                                             });
-                                            setState(() {
-                                              _model.textController5?.clear();
-                                              _model.textController4?.clear();
-                                              _model.txtValorPTextController
-                                                  ?.clear();
-                                              _model.txtNomePTextController
-                                                  ?.clear();
-                                              _model.txtQntTextController
-                                                  ?.clear();
-                                            });
+
+                                            context.pushNamed('pagProdutos');
                                           },
                                           text: 'Alterar',
                                           options: FFButtonOptions(
@@ -723,9 +744,11 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                   .delete(
                                                 matchingRows: (rows) => rows.eq(
                                                   'id',
-                                                  widget.alterarProduto?.id,
+                                                  widget!.alterarProduto!.id,
                                                 ),
                                               );
+
+                                              context.pushNamed('pagProdutos');
                                             } else {
                                               context.pushNamed(
                                                 'pagProdutos',
@@ -741,23 +764,6 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                 },
                                               );
                                             }
-
-                                            setState(() {
-                                              _model.dpdCateValueController
-                                                  ?.reset();
-                                              _model.dpdProdutoValueController
-                                                  ?.reset();
-                                            });
-                                            setState(() {
-                                              _model.textController5?.clear();
-                                              _model.textController4?.clear();
-                                              _model.txtValorPTextController
-                                                  ?.clear();
-                                              _model.txtQntTextController
-                                                  ?.clear();
-                                              _model.txtNomePTextController
-                                                  ?.clear();
-                                            });
                                           },
                                           text: 'Deletar',
                                           options: FFButtonOptions(
@@ -835,93 +841,60 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                 ),
                                 Align(
                                   alignment: AlignmentDirectional(0.0, 0.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      FlutterFlowDropDown<String>(
-                                        controller: _model
-                                                .dpdProdutoValueController ??=
-                                            FormFieldController<String>(null),
-                                        options: [
-                                          'Bebidas',
-                                          'Bebidas alcolicas',
-                                          'Chocolates',
-                                          'Salgados',
-                                          'Todo o estoque'
-                                        ],
-                                        onChanged: (val) => setState(
-                                            () => _model.dpdProdutoValue = val),
-                                        width: 300.0,
-                                        height: 50.0,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              letterSpacing: 0.0,
-                                            ),
-                                        hintText: 'Selecione o produto',
-                                        icon: Icon(
-                                          Icons.keyboard_arrow_down_rounded,
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                          size: 24.0,
-                                        ),
-                                        fillColor: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                        elevation: 2.0,
-                                        borderColor:
-                                            FlutterFlowTheme.of(context)
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 475.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        FlutterFlowDropDown<String>(
+                                          controller: _model
+                                                  .dpdProdutoValueController ??=
+                                              FormFieldController<String>(null),
+                                          options: [
+                                            'Bebidas',
+                                            'Bebidas alcolicas',
+                                            'Chocolates',
+                                            'Salgados',
+                                            'Todo o estoque'
+                                          ],
+                                          onChanged: (val) => safeSetState(() =>
+                                              _model.dpdProdutoValue = val),
+                                          width: 300.0,
+                                          height: 50.0,
+                                          textStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          hintText: 'Selecione a Categoria',
+                                          icon: Icon(
+                                            Icons.keyboard_arrow_down_rounded,
+                                            color: FlutterFlowTheme.of(context)
                                                 .secondaryText,
-                                        borderWidth: 1.0,
-                                        borderRadius: 8.0,
-                                        margin: EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 4.0, 16.0, 4.0),
-                                        hidesUnderline: true,
-                                        isOverButton: true,
-                                        isSearchable: false,
-                                        isMultiSelect: false,
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  24.0, 0.0, 24.0, 8.0),
-                                          child: FFButtonWidget(
-                                            onPressed: () {
-                                              print('Button pressed ...');
-                                            },
-                                            text: 'Pesquisar',
-                                            options: FFButtonOptions(
-                                              height: 25.0,
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      24.0, 0.0, 24.0, 0.0),
-                                              iconPadding: EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .override(
-                                                        fontFamily:
-                                                            'Readex Pro',
-                                                        color: Colors.white,
-                                                        letterSpacing: 0.0,
-                                                      ),
-                                              elevation: 3.0,
-                                              borderSide: BorderSide(
-                                                color: Colors.transparent,
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                            ),
+                                            size: 24.0,
                                           ),
+                                          fillColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryBackground,
+                                          elevation: 2.0,
+                                          borderColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryText,
+                                          borderWidth: 1.0,
+                                          borderRadius: 8.0,
+                                          margin:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 4.0, 16.0, 4.0),
+                                          hidesUnderline: true,
+                                          isOverButton: true,
+                                          isSearchable: false,
+                                          isMultiSelect: false,
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -1037,6 +1010,7 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                       List<CadastroProdutoRow>
                                           listViewCadastroProdutoRowList =
                                           snapshot.data!;
+
                                       return ListView.builder(
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
@@ -1079,7 +1053,11 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                     Expanded(
                                                       flex: 4,
                                                       child: Text(
-                                                        'Produto',
+                                                        valueOrDefault<String>(
+                                                          listViewCadastroProdutoRow
+                                                              .nome,
+                                                          'Nome',
+                                                        ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
                                                             .bodyMedium
@@ -1098,7 +1076,11 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                     Expanded(
                                                       flex: 4,
                                                       child: Text(
-                                                        'Quantidade',
+                                                        valueOrDefault<String>(
+                                                          listViewCadastroProdutoRow
+                                                              .quantidadeEstoque,
+                                                          'Quantidade',
+                                                        ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
                                                             .bodyMedium
@@ -1117,7 +1099,11 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                     Expanded(
                                                       flex: 2,
                                                       child: Text(
-                                                        'Valor',
+                                                        valueOrDefault<String>(
+                                                          listViewCadastroProdutoRow
+                                                              .valorProduto,
+                                                          'Valor',
+                                                        ),
                                                         style: FlutterFlowTheme
                                                                 .of(context)
                                                             .bodyMedium
@@ -1133,13 +1119,50 @@ class _PagAlterarProdutosWidgetState extends State<PagAlterarProdutosWidget> {
                                                             ),
                                                       ),
                                                     ),
-                                                    Icon(
-                                                      Icons.edit_note,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryText,
-                                                      size: 24.0,
+                                                    InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'pagAlterarProdutos',
+                                                          queryParameters: {
+                                                            'alterarProduto':
+                                                                serializeParam(
+                                                              listViewCadastroProdutoRow,
+                                                              ParamType
+                                                                  .SupabaseRow,
+                                                            ),
+                                                          }.withoutNulls,
+                                                          extra: <String,
+                                                              dynamic>{
+                                                            kTransitionInfoKey:
+                                                                TransitionInfo(
+                                                              hasTransition:
+                                                                  true,
+                                                              transitionType:
+                                                                  PageTransitionType
+                                                                      .fade,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      0),
+                                                            ),
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Icon(
+                                                        Icons.edit_note,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        size: 24.0,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
