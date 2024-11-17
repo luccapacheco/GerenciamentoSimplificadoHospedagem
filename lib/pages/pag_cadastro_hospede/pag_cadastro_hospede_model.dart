@@ -17,7 +17,6 @@ class PagCadastroHospedeModel
     extends FlutterFlowModel<PagCadastroHospedeWidget> {
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   // Model for menuLateral component.
   late MenuLateralModel menuLateralModel;
   // Model for menuSuperior component.
@@ -57,10 +56,6 @@ class PagCadastroHospedeModel
   TextEditingController? txtTelefoneTextController;
   final txtTelefoneMask = MaskTextInputFormatter(mask: '(##) #####-####');
   String? Function(BuildContext, String?)? txtTelefoneTextControllerValidator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController8;
-  String? Function(BuildContext, String?)? textController8Validator;
 
   @override
   void initState(BuildContext context) {
@@ -70,7 +65,6 @@ class PagCadastroHospedeModel
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     menuLateralModel.dispose();
     menuSuperiorModel.dispose();
     txtNomeFocusNode?.dispose();
@@ -93,8 +87,5 @@ class PagCadastroHospedeModel
 
     txtTelefoneFocusNode?.dispose();
     txtTelefoneTextController?.dispose();
-
-    textFieldFocusNode?.dispose();
-    textController8?.dispose();
   }
 }
